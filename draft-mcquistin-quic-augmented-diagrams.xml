@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='US-ASCII'?>
+<rfc version='3' ipr='trust200902' submissionType='IETF' docName='draft-mcquistin-quic-augmented-diagrams-00' category='exp'>
+    <front>
+        <title abbrev='QUIC Augmented Packet Diagrams'>
+            Describing QUIC's Protocol Data Units with Augmented Packet Header Diagrams
+        </title>
+        <seriesInfo name='Internet-Draft' value='draft-mcquistin-quic-augmented-diagrams-00' status="experimental" />
+
+        <author fullname='Stephen McQuistin' initials='S.' surname='McQuistin'>
+            <organization>University of Glasgow</organization>
+            <address>
+                <postal>
+                    <street>School of Computing Science</street>
+                    <city>Glasgow</city>
+                    <code>G12 8QQ</code>
+                    <country>UK</country>
+                </postal>
+                <email>sm@smcquistin.uk</email>
+            </address>
+        </author>
+
+        <author fullname='Vivian Band' initials='V.' surname='Band'>
+            <organization>University of Glasgow</organization>
+            <address>
+                <postal>
+                    <street>School of Computing Science</street>
+                    <city>Glasgow</city>
+                    <code>G12 8QQ</code>
+                    <country>UK</country>
+                </postal>
+                <email>vivianband0@gmail.com</email>
+            </address>
+        </author>
+
+        <author fullname='Dejice Jacob' initials='D.' surname='Jacob'>
+            <organization>University of Glasgow</organization>
+            <address>
+                <postal>
+                    <street>School of Computing Science</street>
+                    <city>Glasgow</city>
+                    <code>G12 8QQ</code>
+                    <country>UK</country>
+                </postal>
+                <email>d.jacob.1@research.gla.ac.uk</email>
+            </address>
+        </author>
+
+        <author fullname='Colin Perkins' initials='C. S.' surname='Perkins'>
+            <organization>University of Glasgow</organization>
+            <address>
+                <postal>
+                    <street>School of Computing Science</street>
+                    <city>Glasgow</city>
+                    <code>G12 8QQ</code>
+                    <country>UK</country>
+                </postal>
+                <email>csp@csperkins.org</email>
+            </address>
+        </author>
+
+        <?date year='2020' month='March' day='18'/?>
+
+        <abstract>
+            <t>
+              This document describes the core transport protocol data units
+              used in the QUIC protocol using a machine-readable augmented
+              packet header diagram format. It is intended as an example of
+              the packet header diagram language, and not as a contribution
+              to the development of the QUIC protocol.
+            </t>
+        </abstract>
+    </front>
+
+    <middle>
+        <section anchor='intro'>
+            <name>Introduction</name>
+            <t>
+              Set out the purpose of the document; ref QUIC transport draft,
+              augmented diagram draft.
+            </t>
+        </section>
+
+        <section anchor='IANA'>
+            <name>IANA Considerations</name>
+            <t>
+                This document contains no actions for IANA.
+            </t>
+        </section>
+
+        <section anchor='security'>
+            <name>Security Considerations</name>
+        </section>
+
+        <section anchor='Acknowledgements'>
+            <name>Acknowledgements</name>
+            <t>
+                This work has received funding from the UK Engineering and Physical
+                Sciences Research Council under grant EP/R04144X/1.
+            </t>
+        </section>
+    </middle>
+
+    <back>
+        <references>
+            <name>Informative References</name>
+            <reference anchor="QUIC-TRANSPORT" target="http://www.ietf.org/internet-drafts/draft-ietf-quic-transport-27.txt">
+                <front>
+                    <title>QUIC: A UDP-Based Multiplexed and Secure Transport</title>
+
+                    <author initials='J' surname='Iyengar' fullname='Jana Iyengar'><organization /></author>
+                    <author initials='M' surname='Thomson' fullname='Martin Thomson'><organization /></author>
+
+                    <date month='February' day='21' year='2020' />
+                </front>
+
+                <seriesInfo name='Internet-Draft' value='draft-ietf-quic-transport-27' />
+            </reference>
+            <reference anchor="AUGMENTED-DIAGRAMS" target="http://www.ietf.org/internet-drafts/draft-mcquistin-augmented-ascii-diagrams-03.txt">
+                <front>
+                    <title>Describing Protocol Data Units with Augmented Packet Header Diagrams</title>
+
+                    <author initials='S' surname='McQuistin' fullname='Stephen McQuistin'><organization /></author>
+                    <author initials='V' surname='Band' fullname='Vivian Band'><organization /></author>
+                    <author initials='D' surname='Jacob' fullname='Dejice Jacob'><organization /></author>
+                    <author initials='C. S.' surname='Perkins' fullname='Colin Perkins'><organization /></author>
+
+                    <date month='March' day='9' year='2020' />
+                </front>
+
+                <seriesInfo name='Internet-Draft' value='draft-mcquistin-augmented-ascii-diagrams-03' />
+            </reference>
+        </references>
+
+        <section anchor='source'>
+            <name>Source code repository</name>
+            <t>
+                The source for this draft is available from
+                <eref target="https://github.com/glasgow-ipl/draft-mcquistin-quic-augmented-diagrams" />.
+            </t>
+            <t>
+                The source code for tooling that can be used to parse this document is available
+                from <eref target="https://github.com/glasgow-ipl/ips-protodesc-code" />.
+            </t>
+        </section>
+    </back>
+ </rfc>

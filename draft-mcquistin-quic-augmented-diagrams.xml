@@ -75,8 +75,22 @@
         <section anchor='intro'>
             <name>Introduction</name>
             <t>
-              Set out the purpose of the document; ref QUIC transport draft,
-              augmented diagram draft.
+              The augmented packet header diagram format
+              <xref target="AUGMENTED-DIAGRAMS" /> enables documents to
+              specify the syntax of protocol data units in a way that
+              enables support for automated parser generation, while
+              maintaining human readability.
+            </t>
+            <t>
+              To demonstrate how this approach can be applied, and the
+              value that it can provide, this document describes QUIC
+              <xref target="QUIC-TRANSPORT" /> using the augment packet
+              header diagram format.
+            </t>
+            <t>
+              This document is not an exhaustive description of the QUIC
+              protocol. It contains only those elements necessary to
+              demonstrate the augmented packet header diagram format.
             </t>
         </section>
 

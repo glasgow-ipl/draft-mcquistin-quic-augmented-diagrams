@@ -615,6 +615,100 @@
                   </dd>
                </dl>
             </section>
+            <section anchor='longheader-retry_packet'>
+               <name>Retry Packet</name>
+               <t>A Retry packet is formatted as follows:</t>
+               <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                                                               :
+   :                          Long Header                          :
+   :                                                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                          Retry Token                        ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                                                               |
+   +                                                               +
+   |                                                               |
+   +                     Retry Integrity Tag                       +
+   |                                                               |
+   +                                                               +
+   |                                                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+               </artwork>
+               <t>
+                  where:
+               </t>
+               <dl>
+                  <dt>
+                     Header Form (HF): 1 bit; HF == 1.
+                  </dt>
+                  <dd>
+                     The most significant bit (0x80) of byte 0 (the first byte) is set to 1 for long headers.
+                  </dd>
+                  <dt>
+                     Fixed Bit (FB): 1 bit; FB == 1.
+                  </dt>
+                  <dd>
+                     The next bit (0x40) of byte 0 is set to 1. Packets containing a zero value for this bit are not valid packets in this version and MUST be discarded.
+                  </dd>
+                  <dt>
+                     Long Packet Type (T): 2 bits; T == 3.
+                  </dt>
+                  <dd>
+                     A Retry packet uses long headers with a type value of 0x3.
+                  </dd>
+                  <dt>
+                     Unused: 4 bits.
+                  </dt>
+                  <dd>
+                     4 unused bits.
+                  </dd>
+                  <dt>
+                     Version: 32 bits.
+                  </dt>
+                  <dd>
+                     This field indicates which version of QUIC is in use.
+                  </dd>
+                  <dt>
+                     DCID Len (DLen): 1 byte; DLen &lt;= 20.
+                  </dt>
+                  <dd>
+                     This field contains the length, in bytes, of the Destination Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
+                  </dd>
+                  <dt>
+                     Destination Connection ID: DLen bytes.
+                  </dt>
+                  <dd>
+                     The Destination Connection ID field is between 0 and 20 bytes in length.
+                  </dd>
+                  <dt>
+                     SCID Len (SLen): 1 byte; SLen &lt;= 20.
+                  </dt>
+                  <dd>
+                      This field contains the length, in bytes, of the Source Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20 bytes. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
+                  </dd>
+                  <dt>
+                     Source Connection ID: SLen bytes.
+                  </dt>
+                  <dd>
+                     The Source Connection ID field is between 0 and 20 bytes in length.
+                  </dd>
+                  <dt>
+                     Retry Token
+                  </dt>
+                  <dd>
+                     An opaque token that the server can use to validate the client's address.
+                  </dd>
+                  <dt>
+                     Retry Integrity Tag: 128 bits.
+                  </dt>
+                  <dd>
+                     Retry Integrity Tag field.
+                  </dd>
+               </dl>
+            </section>
         </section>
 
         <section anchor='IANA'>

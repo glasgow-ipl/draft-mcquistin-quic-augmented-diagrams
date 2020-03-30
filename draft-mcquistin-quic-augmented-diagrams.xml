@@ -119,13 +119,13 @@
             </t>
             <dl>
                 <dt>
-                    Header Form: 1 bit.
+                    Header Form (HF): 1 bit; HF == 1.
                 </dt>
                 <dd>
                     The most significant bit (0x80) of byte 0 (the first byte) is set to 1 for long headers.
                 </dd>
                 <dt>
-                    Fixed Bit: 1 bit.
+                    Fixed Bit (FB): 1 bit; FB == 1.
                 </dt>
                 <dd>
                     The next bit (0x40) of byte 0 is set to 1. Packets containing a zero value for this bit are not valid packets in this version and MUST be discarded.
@@ -149,25 +149,25 @@
                     This field indicates which version of QUIC is in use and determines how the rest of the protocol fields are interpreted.
                 </dd>
                 <dt>
-                    DCID Len: 1 byte.
+                    DCID Len (DLen): 1 byte; DLen <= 20.
                 </dt>
                 <dd>
                     This field contains the length, in bytes, of the Destination Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
                 </dd>
                 <dt>
-                    Destination Connection ID: (DCID Len) bytes.
+                    Destination Connection ID: DLen bytes.
                 </dt>
                 <dd>
                     The Destination Connection ID field is between 0 and 20 bytes in length.
                 </dd>
                 <dt>
-                    SCID Len: 1 byte.
+                    SCID Len (SLen): 1 byte; SLen <= 20.
                 </dt>
                 <dd>
                     This field contains the length, in bytes, of the Source Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20 bytes. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
                 </dd>
                 <dt>
-                    Source Connection ID: (SCID Len) bytes.
+                    Source Connection ID: SLen bytes.
                 </dt>
                 <dd>
                     The Source Connection ID field is between 0 and 20 bytes in length.

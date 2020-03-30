@@ -513,6 +513,108 @@
                   </dd>
                </dl>
             </section>
+            <section anchor='longheader-handshake_packet'>
+               <name>Handshake Packet</name>
+               <t>A Handshake packet is formatted as follows:</t>
+               <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                                                               :
+   :                          Long Header                          :
+   :                                                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                             Length                          ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                          Packet Number                      ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                             Payload                         ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+               </artwork>
+               <t>
+                  where:
+               </t>
+               <dl>
+                  <dt>
+                     Header Form (HF): 1 bit; HF == 1.
+                  </dt>
+                  <dd>
+                     The most significant bit (0x80) of byte 0 (the first byte) is set to 1 for long headers.
+                  </dd>
+                  <dt>
+                     Fixed Bit (FB): 1 bit; FB == 1.
+                  </dt>
+                  <dd>
+                     The next bit (0x40) of byte 0 is set to 1. Packets containing a zero value for this bit are not valid packets in this version and MUST be discarded.
+                  </dd>
+                  <dt>
+                     Long Packet Type (T): 2 bits; T == 2.
+                  </dt>
+                  <dd>
+                     A Handshake packet uses long headers with a type value of 0x2.
+                  </dd>
+                  <dt>
+                     Reserved Bits (R): 2 bits.
+                  </dt>
+                  <dd>
+                     Two bits (those with a mask of 0x0c) of byte 0 are reserved across multiple packet types. These bits are protected using header protection.
+                  </dd>
+                  <dt>
+                     Packet Length (P): 2 bits.
+                  </dt>
+                  <dd>
+                     In packet types which contain a Packet Number field, the least significant two bits (those with a mask of 0x03) of byte 0 contain the length of the packet number, encoded as an unsigned, two-bit integer that is one less than the length of the packet number field in bytes.
+                  </dd>
+                  <dt>
+                     Version: 32 bits.
+                  </dt>
+                  <dd>
+                     This field indicates which version of QUIC is in use.
+                  </dd>
+                  <dt>
+                     DCID Len (DLen): 1 byte; DLen &lt;= 20.
+                  </dt>
+                  <dd>
+                     This field contains the length, in bytes, of the Destination Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
+                  </dd>
+                  <dt>
+                     Destination Connection ID: DLen bytes.
+                  </dt>
+                  <dd>
+                     The Destination Connection ID field is between 0 and 20 bytes in length.
+                  </dd>
+                  <dt>
+                     SCID Len (SLen): 1 byte; SLen &lt;= 20.
+                  </dt>
+                  <dd>
+                      This field contains the length, in bytes, of the Source Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20 bytes. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
+                  </dd>
+                  <dt>
+                     Source Connection ID: SLen bytes.
+                  </dt>
+                  <dd>
+                     The Source Connection ID field is between 0 and 20 bytes in length.
+                  </dd>
+                  <dt>
+                     Length: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     The length of the remainder of the packet (that is, the Packet Number and Payload fields) in bytes, encoded as a variable-length integer.
+                  </dd>
+                  <dt>
+                     Packet Number: P+1 bytes.
+                  </dt>
+                  <dd>
+                     The packet number field.
+                  </dd>
+                  <dt>
+                     Payload: (Length.Value-(P+1)) bytes.
+                  </dt>
+                  <dd>
+                     The payload field.
+                  </dd>
+               </dl>
+            </section>
         </section>
 
         <section anchor='IANA'>

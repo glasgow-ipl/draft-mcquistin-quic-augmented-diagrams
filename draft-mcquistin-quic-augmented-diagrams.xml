@@ -1373,6 +1373,37 @@
                   </dd>
                </dl>
            </section>
+            <section anchor='frames_datablocked'>
+               <name>DATA_BLOCKED frame</name>
+               <t>A DATA_BLOCKED Frame is formatted as follows:</t>
+               <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |       20      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                           Data Limit                        ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+               </artwork>
+               <t>
+                  where:
+               </t>
+               <dl>
+                  <dt>
+                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 20.
+                  </dt>
+                  <dd>
+                     Frame type, set to 20 for DATA_BLOCKED frames.
+                  </dd>
+                  <dt>
+                     Data Limit: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     A variable-length integer indicating the connection-level limit at which blocking occurred.
+                  </dd>
+               </dl>
+           </section>
+
         </section>
    
         <section anchor='IANA'>

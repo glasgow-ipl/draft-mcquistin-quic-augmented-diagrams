@@ -1201,7 +1201,7 @@
                   </dd>
                </dl>
            </section>
-               <section anchor='frames_stream'>
+            <section anchor='frames_stream'>
                <name>STREAM frame</name>
                <t>A STREAM Frame is formatted as follows:</t>
                <artwork>
@@ -1272,6 +1272,36 @@
                   </dt>
                   <dd>
                      The bytes from the designated stream to be delivered.
+                  </dd>
+               </dl>
+           </section>
+            <section anchor='frames_maxdata'>
+               <name>MAX_DATA frame</name>
+               <t>A MAX_DATA Frame is formatted as follows:</t>
+               <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |       16      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                         Maximum Data                        ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+               </artwork>
+               <t>
+                  where:
+               </t>
+               <dl>
+                  <dt>
+                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 16.
+                  </dt>
+                  <dd>
+                     Frame type, set to 16 for MAX_DATA frames.
+                  </dd>
+                  <dt>
+                     Maximum Data (TL): 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                      A variable-length integer indicating the maximum amount of data that can be sent on the entire connection, in units of bytes.
                   </dd>
                </dl>
            </section>

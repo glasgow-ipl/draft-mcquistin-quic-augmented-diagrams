@@ -1161,6 +1161,47 @@
                   </dd>
                </dl>
            </section>
+            <section anchor='frames_newtoken'>
+               <name>NEW_TOKEN frame</name>
+               <t>A NEW_TOKEN Frame is formatted as follows:</t>
+               <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |       7       |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                         Token Length                        ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                                                               :
+   :                            Token                              :
+   :                                                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+               </artwork>
+               <t>
+                  where:
+               </t>
+               <dl>
+                  <dt>
+                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 7.
+                  </dt>
+                  <dd>
+                     Frame type, set to 7 for NEW_TOKEN frames.
+                  </dd>
+                  <dt>
+                     Token Length (TL): 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     A variable-length integer specifying the length of the token in bytes.
+                  </dd>
+                  <dt>
+                     Token: TL bytes.
+                  </dt>
+                  <dd>
+                     An opaque blob that the client may use with a future Initial packet.
+                  </dd>
+               </dl>
+           </section>
+
         </section>
    
         <section anchor='IANA'>

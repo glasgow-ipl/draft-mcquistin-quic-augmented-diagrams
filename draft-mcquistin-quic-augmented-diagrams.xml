@@ -1633,6 +1633,62 @@
                   </dd>
                </dl>
            </section>
+            <section anchor='frames_connectionclose'>
+               <name>CONNECTION_CLOSE frame</name>
+               <t>A CONNECTION_CLOSE Frame is formatted as follows:</t>
+               <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |       FT      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                           Error Code                        ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                           Frame Type                        ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                      Reason Phrase Length                   ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                                                               :
+   :                         Reason Phrase                         :
+   :                                                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+               </artwork>
+               <t>
+                  where:
+               </t>
+               <dl>
+                  <dt>
+                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 28 || FT == 29.
+                  </dt>
+                  <dd>
+                     Frame type, set to 28 or 29 for CONNECTION_CLOSE frames.
+                  </dd>
+                  <dt>
+                     Error Code: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     A variable length integer error code which indicates the reason for closing this connection.
+                  </dd>
+                  <dt>
+                     Frame Type: 1 * Variable-Length Integer Encoding; present only when FT == 28.
+                  </dt>
+                  <dd>
+                     A variable-length integer encoding the type of frame that triggered the error.
+                  </dd>
+                  <dt>
+                     Reason Phrase Length (Length): 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     A variable-length integer specifying the length of the reason phrase in bytes.
+                  </dd>
+                  <dt>
+                     Reason Phrase: Length bytes.
+                  </dt>
+                  <dd>
+                     A human-readable explanation for why the connection was closed.
+                  </dd>
+               </dl>
+           </section>
         </section>
    
         <section anchor='IANA'>

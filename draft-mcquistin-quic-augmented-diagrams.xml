@@ -1298,10 +1298,48 @@
                      Frame type, set to 16 for MAX_DATA frames.
                   </dd>
                   <dt>
-                     Maximum Data (TL): 1 * Variable-Length Integer Encoding.
+                     Maximum Data: 1 * Variable-Length Integer Encoding.
                   </dt>
                   <dd>
-                      A variable-length integer indicating the maximum amount of data that can be sent on the entire connection, in units of bytes.
+                     A variable-length integer indicating the maximum amount of data that can be sent on the entire connection, in units of bytes.
+                  </dd>
+               </dl>
+           </section>
+            <section anchor='frames_maxstreamdata'>
+               <name>MAX_STREAM_DATA frame</name>
+               <t>A MAX_DATA Frame is formatted as follows:</t>
+               <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |       17      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                          Stream ID                          ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                      Maximum Stream Data                    ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+               </artwork>
+               <t>
+                  where:
+               </t>
+               <dl>
+                  <dt>
+                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 17.
+                  </dt>
+                  <dd>
+                     Frame type, set to 17 for MAX_STREAM_DATA frames.
+                  </dd>
+                  <dt>
+                     Stream ID: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     The stream ID of the stream that is affected encoded as a variable-length integer.
+                  </dd>
+                  <dt>
+                     Maximum Stream Data: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     A variable-length integer indicating the maximum amount of data that can be sent on the identified stream, in units of bytes.
                   </dd>
                </dl>
            </section>

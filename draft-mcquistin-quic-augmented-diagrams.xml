@@ -1029,6 +1029,52 @@
                   </dd>
                </dl>
            </section>
+            <section anchor='frames_resetstream'>
+               <name>RESET_STREAM frame</name>
+               <t>A RESET_STREAM Frame is formatted as follows:</t>
+               <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |       4       |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                           Stream ID                         ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                    Application Error Code                   ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                          Final Size                         ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+               </artwork>
+               <t>
+                  where:
+               </t>
+               <dl>
+                  <dt>
+                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 4.
+                  </dt>
+                  <dd>
+                     Frame type, set to 4 for RESET_STREAM frames.
+                  </dd>
+                  <dt>
+                     Stream ID: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     A variable-length integer encoding of the Stream ID of the stream being terminated.
+                  </dd>
+                  <dt>
+                     Application Error Code: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     A variable-length integer containing the application protocol error code which indicates why the stream is being closed.
+                  </dd>
+                  <dt>
+                     Final Size: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     A variable-length integer indicating the final size of the stream by the RESET_STREAM sender, in unit of bytes.
+                  </dd>
+               </dl>
+           </section>
         </section>
    
         <section anchor='IANA'>

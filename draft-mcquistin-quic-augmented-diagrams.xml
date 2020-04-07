@@ -1343,6 +1343,36 @@
                   </dd>
                </dl>
            </section>
+            <section anchor='frames_maxstreams'>
+               <name>MAX_STREAMS frame</name>
+               <t>A MAX_STREAMS Frame is formatted as follows:</t>
+               <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |       FT      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                        Maximum Streams                      ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+               </artwork>
+               <t>
+                  where:
+               </t>
+               <dl>
+                  <dt>
+                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 18 || FT == 19.
+                  </dt>
+                  <dd>
+                     Frame type, set to 18 or 19 for MAX_STREAMS frames.
+                  </dd>
+                  <dt>
+                     Maximum Streams: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     A count of the cumulative number of streams of the corresponding type that can be opened over the lifetime of the connection.
+                  </dd>
+               </dl>
+           </section>
         </section>
    
         <section anchor='IANA'>

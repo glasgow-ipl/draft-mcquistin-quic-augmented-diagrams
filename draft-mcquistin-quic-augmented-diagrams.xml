@@ -1028,7 +1028,7 @@
                      The three ECN Counts.
                   </dd>
                </dl>
-           </section>
+            </section>
             <section anchor='frames_resetstream'>
                <name>RESET_STREAM frame</name>
                <t>A RESET_STREAM Frame is formatted as follows:</t>
@@ -1075,6 +1075,45 @@
                   </dd>
                </dl>
            </section>
+            <section anchor='frames_stopsending'>
+               <name>STOP_SENDING frame</name>
+               <t>A STOP_SENDING Frame is formatted as follows:</t>
+               <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |       5       |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                           Stream ID                         ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                    Application Error Code                   ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+               </artwork>
+               <t>
+                  where:
+               </t>
+               <dl>
+                  <dt>
+                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 5.
+                  </dt>
+                  <dd>
+                     Frame type, set to 5 for STOP_SENDING frames.
+                  </dd>
+                  <dt>
+                     Stream ID: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     A variable-length integer carrying the Stream ID of the stream being ignored.
+                  </dd>
+                  <dt>
+                     Application Error Code: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     A variable-length integer containing the application-specified reason the sender is ignoring the stream.
+                  </dd>
+               </dl>
+           </section>
+
         </section>
    
         <section anchor='IANA'>

@@ -1307,7 +1307,7 @@
            </section>
             <section anchor='frames_maxstreamdata'>
                <name>MAX_STREAM_DATA frame</name>
-               <t>A MAX_DATA Frame is formatted as follows:</t>
+               <t>A MAX_STREAM_DATA Frame is formatted as follows:</t>
                <artwork>
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -1403,7 +1403,44 @@
                   </dd>
                </dl>
            </section>
-
+            <section anchor='frames_streamdatablocked'>
+               <name>STREAM_DATA_BLOCKED frame</name>
+               <t>A STREAM_DATA_BLOCKED Frame is formatted as follows:</t>
+               <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |       21      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                          Stream ID                          ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                       Stream Data Limit                     ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+               </artwork>
+               <t>
+                  where:
+               </t>
+               <dl>
+                  <dt>
+                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 21.
+                  </dt>
+                  <dd>
+                     Frame type, set to 21 for STREAM_DATA_BLOCKED frames.
+                  </dd>
+                  <dt>
+                     Stream ID: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     A variable-length integer indicating the stream which is flow control blocked.
+                  </dd>
+                  <dt>
+                     Maximum Stream Data: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     A variable-length integer indicating the offset of the stream at which the blocking occurred.
+                  </dd>
+               </dl>
+           </section>
         </section>
    
         <section anchor='IANA'>

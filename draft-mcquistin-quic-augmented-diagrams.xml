@@ -1569,6 +1569,38 @@
                   </dd>
                </dl>
            </section>
+            <section anchor='frames_pathchallenge'>
+               <name>PATH_CHALLENGE frame</name>
+               <t>A PATH_CHALLENGE Frame is formatted as follows:</t>
+               <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |       25      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                                                               |
+   +                              Data                             +
+   |                                                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+               </artwork>
+               <t>
+                  where:
+               </t>
+               <dl>
+                  <dt>
+                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 26.
+                  </dt>
+                  <dd>
+                     Frame type, set to 26 for PATH_CHALLENGE frames.
+                  </dd>
+                  <dt>
+                     Data: 64 bits.
+                  </dt>
+                  <dd>
+                     This 8-byte field contains arbitrary data.
+                  </dd>
+               </dl>
+           </section>
         </section>
    
         <section anchor='IANA'>

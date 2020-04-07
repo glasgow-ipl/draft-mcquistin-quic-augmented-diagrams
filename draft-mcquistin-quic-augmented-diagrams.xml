@@ -1441,6 +1441,36 @@
                   </dd>
                </dl>
            </section>
+            <section anchor='frames_streamsblocked'>
+               <name>STREAMS_BLOCKED frame</name>
+               <t>A STREAMS_BLOCKED Frame is formatted as follows:</t>
+               <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |       22      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                         Stream Limit                        ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+               </artwork>
+               <t>
+                  where:
+               </t>
+               <dl>
+                  <dt>
+                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 22.
+                  </dt>
+                  <dd>
+                     Frame type, set to 22 for STREAMS_BLOCKED frames.
+                  </dd>
+                  <dt>
+                     Stream Limit: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     A variable-length integer indicating the stream limit at the time the frame was sent.
+                  </dd>
+               </dl>
+           </section>
         </section>
    
         <section anchor='IANA'>

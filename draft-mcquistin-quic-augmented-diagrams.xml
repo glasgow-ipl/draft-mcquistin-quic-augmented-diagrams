@@ -875,6 +875,28 @@
                   </dd>
                </dl>
            </section>
+            <section anchor='frames_ping'>
+               <name>PING frame</name>
+               <t>A PING Frame is formatted as follows:</t>
+               <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |       1       |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+               </artwork>
+               <t>
+                  where:
+               </t>
+               <dl>
+                  <dt>
+                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 1.
+                  </dt>
+                  <dd>
+                     Frame type, set to 1 for PING frames.
+                  </dd>
+               </dl>
+           </section>
         </section>
    
         <section anchor='IANA'>

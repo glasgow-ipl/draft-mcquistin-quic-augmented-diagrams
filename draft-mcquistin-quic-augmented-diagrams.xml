@@ -1471,7 +1471,74 @@
                   </dd>
                </dl>
            </section>
-
+            <section anchor='frames_newconnectionid'>
+               <name>NEW_CONNECTION_ID frame</name>
+               <t>A NEW_CONNECTION_ID Frame is formatted as follows:</t>
+               <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |       24      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                         Sequence Number                     ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                         Retire Prior To                     ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Length    |                                               |
+   +-+-+-+-+-+-+-+-+            Connection ID                      +
+   |                                                             ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                                                               |
+   +                                                               +
+   |                                                               |
+   +                      Stateless Reset Token                    +
+   |                                                               |
+   +                                                               +
+   |                                                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+               </artwork>
+               <t>
+                  where:
+               </t>
+               <dl>
+                  <dt>
+                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 24.
+                  </dt>
+                  <dd>
+                     Frame type, set to 24 for NEW_CONNECTION_ID frames.
+                  </dd>
+                  <dt>
+                     Sequence Number: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     The sequence number assigned to the connection ID by the sender.
+                  </dd>
+                  <dt>
+                     Retire Prior To: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     A variable-length integer indicating which connection IDs should be retired.
+                  </dd>
+                  <dt>
+                     Length: 1 byte.
+                  </dt>
+                  <dd>
+                     An 8-bit unsigned integer containing the length of the connection ID. Values less than 1 and greater than 20 are invalid and MUST be treated as a connection error of type FRAME_ENCODING_ERROR.
+                  </dd>
+                  <dt>
+                     Connection ID: Length bytes.
+                  </dt>
+                  <dd>
+                     A connection ID of the specified length.
+                  </dd>
+                  <dt>
+                     Stateless Reset Token: 128 bits.
+                  </dt>
+                  <dd>
+                     A 128-bit value that will be used for a stateless reset when the associated connection ID is used.
+                  </dd>
+               </dl>
+           </section>
         </section>
    
         <section anchor='IANA'>

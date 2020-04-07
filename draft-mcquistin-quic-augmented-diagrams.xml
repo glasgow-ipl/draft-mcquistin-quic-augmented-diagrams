@@ -1113,7 +1113,54 @@
                   </dd>
                </dl>
            </section>
-
+            <section anchor='frames_crypto'>
+               <name>CRYPTO frame</name>
+               <t>A CRYPTO Frame is formatted as follows:</t>
+               <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |       6       |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                            Offset                           ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                            Length                           ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                                                               :
+   :                         Crypto Data                           :
+   :                                                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+               </artwork>
+               <t>
+                  where:
+               </t>
+               <dl>
+                  <dt>
+                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 6.
+                  </dt>
+                  <dd>
+                     Frame type, set to 6 for CRYPTO frames.
+                  </dd>
+                  <dt>
+                     Offset: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     A variable-length integer specifying the byte offset in the stream for the data in this CRYPTO frame.
+                  </dd>
+                  <dt>
+                     Length: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     A variable-length integer specifying the length of the Crypto Data field in this CRYPTO frame.
+                  </dd>
+                  <dt>
+                     Crypto Data: Length bytes.
+                  </dt>
+                  <dd>
+                     The cryptographic message data.
+                  </dd>
+               </dl>
+           </section>
         </section>
    
         <section anchor='IANA'>

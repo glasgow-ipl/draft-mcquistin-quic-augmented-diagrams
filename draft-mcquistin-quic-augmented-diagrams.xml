@@ -1539,6 +1539,36 @@
                   </dd>
                </dl>
            </section>
+            <section anchor='frames_retireconnectionid'>
+               <name>RETIRE_CONNECTION_ID frame</name>
+               <t>A RETIRE_CONNECTION_ID Frame is formatted as follows:</t>
+               <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |       25      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                         Sequence Number                     ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+               </artwork>
+               <t>
+                  where:
+               </t>
+               <dl>
+                  <dt>
+                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 25.
+                  </dt>
+                  <dd>
+                     Frame type, set to 25 for RETIRE_CONNECTION_ID frames.
+                  </dd>
+                  <dt>
+                     Sequence Number: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     The sequence number of the connection ID being retired.
+                  </dd>
+               </dl>
+           </section>
         </section>
    
         <section anchor='IANA'>

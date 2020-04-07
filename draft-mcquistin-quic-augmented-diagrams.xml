@@ -1201,7 +1201,80 @@
                   </dd>
                </dl>
            </section>
-
+               <section anchor='frames_stream'>
+               <name>STREAM frame</name>
+               <t>A STREAM Frame is formatted as follows:</t>
+               <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |    1    |O|L|F|
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                          Stream ID                          ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                            Offset                           ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                            Length                           ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                                                               :
+   :                         Stream Data                           :
+   :                                                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+               </artwork>
+               <t>
+                  where:
+               </t>
+               <dl>
+                  <dt>
+                     Unused: 5 bits; Unused == 1.
+                  </dt>
+                  <dd>
+                     Five high-order bits in frame type field; set to 1 for STREAM frames.
+                  </dd>
+                  <dt>
+                     OFF bit (O): 1 bit.
+                  </dt>
+                  <dd>
+                     Set to indicate that there is an Offset field present.
+                  </dd>
+                  <dt>
+                     LEN bit (L): 1 bit.
+                  </dt>
+                  <dd>
+                     Set to indicate that there is a Length field present.
+                  </dd>
+                  <dt>
+                     FIN bit (F): 1 bit.
+                  </dt>
+                  <dd>
+                     Set only on frames that contain the final size of the stream.
+                  </dd>
+                  <dt>
+                     Stream ID: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     A variable-length integer indicating the stream ID of the stream.
+                  </dd>
+                  <dt>
+                     Offset: 1 * Variable-Length Integer Encoding; present only when O == 1.
+                  </dt>
+                  <dd>
+                     A variable-length integer specifying the byte offset in the stream for the data in this STREAM frame.
+                  </dd>
+                  <dt>
+                     Length: 1 * Variable-Length Integer Encoding; present only when L == 1.
+                  </dt>
+                  <dd>
+                     A variable-length integer specifying the length of the Stream Data field in this STREAM frame.  This field is present when the LEN bit is set to 1.  When the LEN bit is set to 0, the Stream Data field consumes all the remaining bytes in the packet.
+                  </dd>
+                  <dt>
+                     Stream Data: Length bytes.
+                  </dt>
+                  <dd>
+                     The bytes from the designated stream to be delivered.
+                  </dd>
+               </dl>
+           </section>
         </section>
    
         <section anchor='IANA'>

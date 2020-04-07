@@ -94,6 +94,55 @@
             </t>
         </section>
 
+        <section anchor='statelessreset'>
+            <name>Stateless Reset</name>
+            <t>A Stateless Reset packet is formatted as follows:</t>
+            <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |0|1|                    Unpredictable Bits                   ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                                                               |
+   +                                                               +
+   |                                                               |
+   +                     Stateless Reset Token                     +
+   |                                                               |
+   +                                                               +
+   |                                                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+            </artwork>
+            <t>
+                where:
+            </t>
+            <dl>
+                <dt>
+                    Header Form (HF): 1 bit; HF == 0.
+                </dt>
+                <dd>
+                    The most significant bit (0x80) of byte 0 (the first byte) is set to 0 for stateless reset packets.
+                </dd>
+                <dt>
+                    Fixed Bit (FB): 1 bit; FB == 1.
+                </dt>
+                <dd>
+                    The next bit (0x40) of byte 0 is set to 1. Packets containing a zero value for this bit are not valid packets in this version and MUST be discarded.
+                </dd>
+                <dt>
+                    Unpredictable Bits: > 38 bits.
+                </dt>
+                <dd>
+                    The remainder of the first byte and an arbitrary number of bytes following it that are set to unpredictable values.
+                </dd>
+                <dt>
+                    Stateless Reset Token: 128 bits.
+                </dt>
+                <dd>
+                    The last 16 bytes of the datagram contain a Stateless Reset Token.
+                </dd>
+            </dl>
+        </section>
+
         <section anchor='longheader'>
             <name>Long Header Packets</name>
             <t>A long header packet is formatted as follows:</t>

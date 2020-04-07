@@ -1448,7 +1448,7 @@
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |       22      |
+   |       FT      |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                         Stream Limit                        ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -1458,10 +1458,10 @@
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 22.
+                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 22 || FT == 23.
                   </dt>
                   <dd>
-                     Frame type, set to 22 for STREAMS_BLOCKED frames.
+                     Frame type, set to 22 or 23 for STREAMS_BLOCKED frames.
                   </dd>
                   <dt>
                      Stream Limit: 1 * Variable-Length Integer Encoding.
@@ -1471,6 +1471,7 @@
                   </dd>
                </dl>
            </section>
+
         </section>
    
         <section anchor='IANA'>

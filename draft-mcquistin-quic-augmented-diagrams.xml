@@ -1689,6 +1689,28 @@
                   </dd>
                </dl>
            </section>
+            <section anchor='frames_handshakedone'>
+               <name>HANDSHAKE_DONE frame</name>
+               <t>A HANDSHAKE_DONE Frame is formatted as follows:</t>
+               <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |       30      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+               </artwork>
+               <t>
+                  where:
+               </t>
+               <dl>
+                  <dt>
+                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 30.
+                  </dt>
+                  <dd>
+                     Frame type, set to 30 for HANDSHAKE_DONE frames.
+                  </dd>
+               </dl>
+           </section>
         </section>
    
         <section anchor='IANA'>

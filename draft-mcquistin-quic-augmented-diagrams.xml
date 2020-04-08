@@ -93,7 +93,7 @@
               demonstrate the augmented packet header diagram format.
             </t>
             <t>
-               The QUIC protocol has the following PDUs: a Stateless Reset packet, a Version Negotiation packet, a Protected Long Header Packet, a Retry packet, or a Protected Short Header Packet.
+               The QUIC protocol has the following PDUs: a Stateless Reset Packet, a Version Negotiation Packet, a Protected Long Header Packet, a Retry Packet, or a Protected Short Header Packet.
             </t>
         </section>
 
@@ -150,7 +150,7 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
 
         <section anchor='statelessreset'>
             <name>Stateless Reset</name>
-            <t>A Stateless Reset packet is formatted as follows:</t>
+            <t>A Stateless Reset Packet is formatted as follows:</t>
             <artwork>
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -218,7 +218,7 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                   32-bit version identifier.
                </dd>
             </dl>
-            <t>A Version Negotiation packet is formatted as follows:</t>
+            <t>A Version Negotiation Packet is formatted as follows:</t>
             <artwork>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -445,7 +445,7 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                   The Destination Connection ID field is between 0 and 20 bytes in length.
                </dd>
                <dt>
-                  SCID Len (SLen): 1 byte; SLen &lt;= 20.
+                  SCID Len (SLen): 1 byte; SLen &lt;= 20.q
                </dt>
                <dd>
                   This field contains the length, in bytes, of the Source Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20 bytes. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
@@ -461,7 +461,7 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
             <t>A Protected Long Header Packet is serialised from a Long Header Packet using the apply_protection(HF + FB + T + R + P, Packet Number, Payload) function.</t>
             <section anchor='longheader-initial_packet'>
                <name>Initial Packet</name>
-               <t>An Initial packet is formatted as follows:</t>
+               <t>An Initial Packet is formatted as follows:</t>
                <artwork>
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -586,7 +586,7 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
             </section>
             <section anchor='longheader-0tt_packet'>
                <name>0-RTT Packet</name>
-               <t>A 0-RTT packet is formatted as follows:</t>
+               <t>A 0-RTT Packet is formatted as follows:</t>
                <artwork>
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -631,7 +631,7 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                      The payload field, comprised of multiple frames.
                   </dd>
                </dl>
-               <t>A Protected 0-RTT packet is formatted as follows:</t>
+               <t>A Protected 0-RTT Packet is formatted as follows:</t>
                <artwork>
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -679,7 +679,7 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
             </section>
             <section anchor='longheader-handshake_packet'>
                <name>Handshake Packet</name>
-               <t>A Handshake packet is formatted as follows:</t>
+               <t>A Handshake Packet is formatted as follows:</t>
                <artwork>
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -772,7 +772,7 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
             </section>
             <section anchor='longheader-retry_packet'>
                <name>Retry Packet</name>
-               <t>A Retry packet is formatted as follows:</t>
+               <t>A Retry Packet is formatted as follows:</t>
                <artwork>
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -820,7 +820,7 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
 
         <section anchor='shortheader'>
             <name>Short Header Packets</name>
-            <t>A Short Header packet is formatted as follows:</t>
+            <t>A Short Header Packet is formatted as follows:</t>
             <artwork>
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1

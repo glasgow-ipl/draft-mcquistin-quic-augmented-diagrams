@@ -93,44 +93,28 @@
               demonstrate the augmented packet header diagram format.
             </t>
             <t>
-               The QUIC protocol has the following PDUs: a Stateless Reset packet, a Version Negotiation packet, a Protected Long Header Packet, a Retry packet, or a Protected Short Header packet.
+               The QUIC protocol has the following PDUs: a Stateless Reset packet, a Version Negotiation packet, a Protected Long Header Packet, a Retry packet, or a Protected Short Header Packet.
             </t>
         </section>
 
         <section anchor='protection'>
             <name>Header and Packet Protection</name>
-            <t>The apply_protection function has the following parameters:</t>
-            <dl>
-               <dt>
-                  first_byte
-               </dt>
-               <dd>
-                  The first byte of the packet to be protected.
-               </dd>
-               <dt>
-                  packet_number
-               </dt>
-               <dd> 
-                  The packet number to be protected.
-               </dd>
-               <dt>
-                  payload
-               </dt>
-               <dd>
-                  The payload to be protected.
-               </dd>
-            </dl>
-            <t>The apply_protection function returns a packet with protection applied.</t>
-            <t>The remove_protection function has the following parameters:</t>
-            <dl>
-               <dt>
-                  protected_packet
-               </dt>
-               <dd>
-                  The packet to remove protection from.
-               </dd>
-            </dl>
-            <t>The remove_protection function returns a packet with protection removed.</t>
+            <t>A Protected Packet is one of: a Protected Long Header Packet or a Protected Short Header Packet.</t>
+            <artwork>
+func apply_protection(first_byte: BitString,
+                      packet_number: BitString,
+                      payload: BitString)      -> Protected Packet:
+   apply packet protection to payload
+   apply header protection to first_byte and packet_number
+   construct appropriate Protected Packet based on first_byte
+   return Protected Packet
+
+func remove_protection(protected_packet: Protected Packet) -> PDU:
+   remove header protection from protected_packet
+   remove packet protection from protected_packet
+   construct appropriate PDU type based on type of protected_packet
+   return PDU
+            </artwork>
         </section>
 
         <section anchor='variableint'>
@@ -358,7 +342,7 @@
                   Two bits (those with a mask of 0x0c) of byte 0 are reserved across multiple packet types. These bits are protected using header protection.
                </dd>
                <dt>
-                  Packet Length (P): 2 bits.
+                  Packet Number Length (P): 2 bits.
                </dt>
                <dd>
                   In packet types which contain a Packet Number field, the least significant two bits (those with a mask of 0x03) of byte 0 contain the length of the packet number, encoded as an unsigned, two-bit integer that is one less than the length of the packet number field in bytes.

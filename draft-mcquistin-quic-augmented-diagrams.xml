@@ -463,10 +463,10 @@
                      The packet number field.
                   </dd>
                   <dt>
-                     Payload: (Length.Value-(P+1)) bytes.
+                     Payload: * Frame.
                   </dt>
                   <dd>
-                     The payload field.
+                     The payload field, comprised of multiple frames.
                   </dd>
                </dl>
                <t>A Protected Initial packet is formatted as follows:</t>
@@ -696,10 +696,10 @@
                      The packet number field.
                   </dd>
                   <dt>
-                     Payload: (Length.Value-(P+1)) bytes.
+                     Payload: * Frame.
                   </dt>
                   <dd>
-                     The payload field.
+                     The payload field, comprised of multiple frames.
                   </dd>
                </dl>
                <t>A Protected 0-RTT packet is formatted as follows:</t>
@@ -907,10 +907,10 @@
                      The packet number field.
                   </dd>
                   <dt>
-                     Payload: (Length.Value-(P+1)) bytes.
+                     Payload: * Frame.
                   </dt>
                   <dd>
-                     The payload field.
+                     The payload field, comprised of multiple frames.
                   </dd>
                </dl>
                <t>A Protected Handshake packet is formatted as follows:</t>
@@ -1190,10 +1190,10 @@
                   The packet number field is 1 to 4 bytes long. The packet number has confidentiality protection separate from packet protection.  The length of the packet number field is encoded in Packet Number Length field.
                </dd>
                <dt>
-                  Protected Payload.
+                  Payload: * Frame.
                </dt>
                <dd>
-                  The payload field.
+                  The payload field, comprised of multiple frames.
                </dd>
             </dl>
             <t>A Protected Short Header packet is formatted as follows:</t>

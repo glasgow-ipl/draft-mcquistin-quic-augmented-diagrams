@@ -469,6 +469,129 @@
                      The payload field.
                   </dd>
                </dl>
+               <t>A Protected Initial packet is formatted as follows:</t>
+               <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+
+   |1|1| 0 | ProcRP|
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                             Version                           |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |    DCID Len   |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                   Destination Connection ID                 ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |    SCID Len   |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                      Source Connection ID                   ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                          Token Length                       ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                             Token                           ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                             Length                          ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                    Protected Packet Number                  ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                       Protected Payload                     ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+               </artwork>
+               <t>
+                  where:
+               </t>
+               <dl>
+                  <dt>
+                     Header Form (HF): 1 bit; HF == 1.
+                  </dt>
+                  <dd>
+                     The most significant bit (0x80) of byte 0 (the first byte) is set to 1 for long headers.
+                  </dd>
+                  <dt>
+                     Fixed Bit (FB): 1 bit; FB == 1.
+                  </dt>
+                  <dd>
+                     The next bit (0x40) of byte 0 is set to 1. Packets containing a zero value for this bit are not valid packets in this version and MUST be discarded.
+                  </dd>
+                  <dt>
+                     Long Packet Type (T): 2 bits; T == 0.
+                  </dt>
+                  <dd>
+                     An Initial packet uses long headers with a type value of 0x0.
+                  </dd>
+                  <dt>
+                     Protected Reserved Bits and Packet Length (ProcRP): 4 bits.
+                  </dt>
+                  <dd>
+                     Four bits, with header protection. 2 for Reserved bits, 2 for Packet Length. bits (those with a mask of 0x0c) of byte 0 are reserved across multiple packet types. These bits are protected using header protection.
+                  </dd>
+                  <dt>
+                     Packet Length (P): 2 bits.
+                  </dt>
+                  <dd>
+                     In packet types which contain a Packet Number field, the least significant two bits (those with a mask of 0x03) of byte 0 contain the length of the packet number, encoded as an unsigned, two-bit integer that is one less than the length of the packet number field in bytes.
+                  </dd>
+                  <dt>
+                     Version: 32 bits.
+                  </dt>
+                  <dd>
+                     This field indicates which version of QUIC is in use.
+                  </dd>
+                  <dt>
+                     DCID Len (DLen): 1 byte; DLen &lt;= 20.
+                  </dt>
+                  <dd>
+                     This field contains the length, in bytes, of the Destination Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
+                  </dd>
+                  <dt>
+                     Destination Connection ID: DLen bytes.
+                  </dt>
+                  <dd>
+                     The Destination Connection ID field is between 0 and 20 bytes in length.
+                  </dd>
+                  <dt>
+                     SCID Len (SLen): 1 byte; SLen &lt;= 20.
+                  </dt>
+                  <dd>
+                      This field contains the length, in bytes, of the Source Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20 bytes. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
+                  </dd>
+                  <dt>
+                     Source Connection ID: SLen bytes.
+                  </dt>
+                  <dd>
+                     The Source Connection ID field is between 0 and 20 bytes in length.
+                  </dd>
+                  <dt>
+                     Token Length (TL): 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     A variable-length integer specifying the length of the Token field, in bytes.
+                  </dd>
+                  <dt>
+                     Token: TL.Value bytes; present only when TL.Value &gt; 0.
+                  </dt>
+                  <dd>
+                     The value of the token that was previously provided in a Retry packet or NEW_TOKEN frame.
+                  </dd>
+                  <dt>
+                     Length: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     The length of the remainder of the packet (that is, the Packet Number and Payload fields) in bytes, encoded as a variable-length integer.
+                  </dd>
+                  <dt>
+                     Protected Packet Number: P+1 bytes.
+                  </dt>
+                  <dd>
+                     The packet number field, with header protection.
+                  </dd>
+                  <dt>
+                     Protected Payload: (Length.Value-(P+1)) bytes.
+                  </dt>
+                  <dd>
+                     The protected payload field.
+                  </dd>
+               </dl>
             </section>
             <section anchor='longheader-0tt_packet'>
                <name>0-RTT Packet</name>
@@ -577,6 +700,107 @@
                   </dt>
                   <dd>
                      The payload field.
+                  </dd>
+               </dl>
+               <t>A Protected 0-RTT packet is formatted as follows:</t>
+               <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+
+   |1|1| 1 | ProcRP|
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                             Version                           |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |    DCID Len   |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                   Destination Connection ID                 ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |    SCID Len   |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                      Source Connection ID                   ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                             Length                          ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                    Protected Packet Number                  ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                       Protected Payload                     ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+               </artwork>
+               <t>
+                  where:
+               </t>
+               <dl>
+                  <dt>
+                     Header Form (HF): 1 bit; HF == 1.
+                  </dt>
+                  <dd>
+                     The most significant bit (0x80) of byte 0 (the first byte) is set to 1 for long headers.
+                  </dd>
+                  <dt>
+                     Fixed Bit (FB): 1 bit; FB == 1.
+                  </dt>
+                  <dd>
+                     The next bit (0x40) of byte 0 is set to 1. Packets containing a zero value for this bit are not valid packets in this version and MUST be discarded.
+                  </dd>
+                  <dt>
+                     Long Packet Type (T): 2 bits; T == 1.
+                  </dt>
+                  <dd>
+                     A 0-RTT packet uses long headers with a type value of 0x1.
+                  </dd>
+                  <dt>
+                     Protected Reserved Bits and Packet Length (ProcRP): 4 bits.
+                  </dt>
+                  <dd>
+                     Four bits, with header protection. 2 for Reserved bits, 2 for Packet Length. bits (those with a mask of 0x0c) of byte 0 are reserved across multiple packet types. These bits are protected using header protection.
+                  </dd>
+                  <dt>
+                     Version: 32 bits.
+                  </dt>
+                  <dd>
+                     This field indicates which version of QUIC is in use.
+                  </dd>
+                  <dt>
+                     DCID Len (DLen): 1 byte; DLen &lt;= 20.
+                  </dt>
+                  <dd>
+                     This field contains the length, in bytes, of the Destination Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
+                  </dd>
+                  <dt>
+                     Destination Connection ID: DLen bytes.
+                  </dt>
+                  <dd>
+                     The Destination Connection ID field is between 0 and 20 bytes in length.
+                  </dd>
+                  <dt>
+                     SCID Len (SLen): 1 byte; SLen &lt;= 20.
+                  </dt>
+                  <dd>
+                      This field contains the length, in bytes, of the Source Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20 bytes. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
+                  </dd>
+                  <dt>
+                     Source Connection ID: SLen bytes.
+                  </dt>
+                  <dd>
+                     The Source Connection ID field is between 0 and 20 bytes in length.
+                  </dd>
+                  <dt>
+                     Length: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     The length of the remainder of the packet (that is, the Packet Number and Payload fields) in bytes, encoded as a variable-length integer.
+                  </dd>
+                  <dt>
+                     Protected Packet Number: P+1 bytes.
+                  </dt>
+                  <dd>
+                     The packet number field, with header protection.
+                  </dd>
+                  <dt>
+                     Protected Payload: (Length.Value-(P+1)) bytes.
+                  </dt>
+                  <dd>
+                     The protected payload field.
                   </dd>
                </dl>
             </section>
@@ -689,6 +913,107 @@
                      The payload field.
                   </dd>
                </dl>
+               <t>A Protected Handshake packet is formatted as follows:</t>
+               <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+
+   |1|1| 2 | ProcRP|
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                             Version                           |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |    DCID Len   |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                   Destination Connection ID                 ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |    SCID Len   |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                      Source Connection ID                   ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                             Length                          ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                    Protected Packet Number                  ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                       Protected Payload                     ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+               </artwork>
+               <t>
+                  where:
+               </t>
+               <dl>
+                  <dt>
+                     Header Form (HF): 1 bit; HF == 1.
+                  </dt>
+                  <dd>
+                     The most significant bit (0x80) of byte 0 (the first byte) is set to 1 for long headers.
+                  </dd>
+                  <dt>
+                     Fixed Bit (FB): 1 bit; FB == 1.
+                  </dt>
+                  <dd>
+                     The next bit (0x40) of byte 0 is set to 1. Packets containing a zero value for this bit are not valid packets in this version and MUST be discarded.
+                  </dd>
+                  <dt>
+                     Long Packet Type (T): 2 bits; T == 2.
+                  </dt>
+                  <dd>
+                     A Handshake packet uses long headers with a type value of 0x2.
+                  </dd>
+                  <dt>
+                     Protected Reserved Bits and Packet Length (ProcRP): 4 bits.
+                  </dt>
+                  <dd>
+                     Four bits, with header protection. 2 for Reserved bits, 2 for Packet Length. bits (those with a mask of 0x0c) of byte 0 are reserved across multiple packet types. These bits are protected using header protection.
+                  </dd>
+                  <dt>
+                     Version: 32 bits.
+                  </dt>
+                  <dd>
+                     This field indicates which version of QUIC is in use.
+                  </dd>
+                  <dt>
+                     DCID Len (DLen): 1 byte; DLen &lt;= 20.
+                  </dt>
+                  <dd>
+                     This field contains the length, in bytes, of the Destination Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
+                  </dd>
+                  <dt>
+                     Destination Connection ID: DLen bytes.
+                  </dt>
+                  <dd>
+                     The Destination Connection ID field is between 0 and 20 bytes in length.
+                  </dd>
+                  <dt>
+                     SCID Len (SLen): 1 byte; SLen &lt;= 20.
+                  </dt>
+                  <dd>
+                      This field contains the length, in bytes, of the Source Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20 bytes. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
+                  </dd>
+                  <dt>
+                     Source Connection ID: SLen bytes.
+                  </dt>
+                  <dd>
+                     The Source Connection ID field is between 0 and 20 bytes in length.
+                  </dd>
+                  <dt>
+                     Length: 1 * Variable-Length Integer Encoding.
+                  </dt>
+                  <dd>
+                     The length of the remainder of the packet (that is, the Packet Number and Payload fields) in bytes, encoded as a variable-length integer.
+                  </dd>
+                  <dt>
+                     Protected Packet Number: P+1 bytes.
+                  </dt>
+                  <dd>
+                     The packet number field, with header protection.
+                  </dd>
+                  <dt>
+                     Protected Payload: (Length.Value-(P+1)) bytes.
+                  </dt>
+                  <dd>
+                     The protected payload field.
+                  </dd>
+               </dl>
             </section>
             <section anchor='longheader-retry_packet'>
                <name>Retry Packet</name>
@@ -796,7 +1121,7 @@
 
         <section anchor='shortheader'>
             <name>Short Header Packets</name>
-            <t>A short header packet is formatted as follows:</t>
+            <t>A Short Header packet is formatted as follows:</t>
             <artwork>
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -808,7 +1133,7 @@
    |                         Packet Number                       ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                                                               :
-   :                       Protected Payload                       :
+   :                            Payload                            :
    :                                                               |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
             </artwork>
@@ -851,6 +1176,69 @@
                </dt>
                <dd>
                   In packet types which contain a Packet Number field, the least significant two bits (those with a mask of 0x03) of byte 0 contain the length of the packet number, encoded as an unsigned, two-bit integer that is one less than the length of the packet number field in bytes. These bits are protected using header protection.
+               </dd>
+               <dt>
+                  Destination Connection ID: 20 bytes.
+               </dt>
+               <dd>
+                  The Destination Connection ID is a connection ID that is chosen by the intended recipient of the packet.
+               </dd>
+               <dt>
+                  Packet Number: P+1 bytes.
+               </dt>
+               <dd>
+                  The packet number field is 1 to 4 bytes long. The packet number has confidentiality protection separate from packet protection.  The length of the packet number field is encoded in Packet Number Length field.
+               </dd>
+               <dt>
+                  Protected Payload.
+               </dt>
+               <dd>
+                  The payload field.
+               </dd>
+            </dl>
+            <t>A Protected Short Header packet is formatted as follows:</t>
+            <artwork>
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+
+   |0|1|S| ProcRKP |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                   Destination Connection ID                 ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                    Protected Packet Number                  ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                                                               :
+   :                       Protected Payload                       :
+   :                                                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+            </artwork>
+            <t>
+               where:
+            </t>
+            <dl>
+               <dt>
+                  Header Form (HF): 1 bit; HF == 0.
+               </dt>
+               <dd>
+                  The most significant bit (0x80) of byte 0 (the first byte) is set to 0 for short headers.
+               </dd>
+               <dt>
+                  Fixed Bit (FB): 1 bit; FB == 1.
+               </dt>
+               <dd>
+                  The next bit (0x40) of byte 0 is set to 1. Packets containing a zero value for this bit are not valid packets in this version and MUST be discarded.
+               </dd>
+               <dt>
+                  Spin Bit (S): 1 bit.
+               </dt>
+               <dd>
+                  The third most significant bit (0x20) of byte 0 is the latency spin bit.
+               </dd>
+               <dt>
+                  Protected Reserved Bits, Key Phase, and Packet Number Length (ProcRKP): 5 bits.
+               </dt>
+               <dd>
+                  Five header protected bits.
                </dd>
                <dt>
                   Destination Connection ID: 20 bytes.

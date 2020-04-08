@@ -182,6 +182,102 @@
             </dl>
         </section>
 
+         <section anchor='longheader-version_negotiation'>
+            <name>Version Negotiation Packet</name>
+            <t>A Version is formatted as follows:</t>
+            <artwork>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                     Version identifier                        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+            </artwork>
+            <t>
+               where:
+            </t>
+            <dl>
+               <dt>
+                  Version identifier: 32 bits.
+               </dt>
+               <dd>
+                  32-bit version identifier.
+               </dd>
+            </dl>
+            <t>A Version Negotiation packet is formatted as follows:</t>
+            <artwork>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|1|   Unused  |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                             Version                           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|    DCID Len   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                   Destination Connection ID                 ...
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|    SCID Len   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      Source Connection ID                   ...
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      [Supported Versions]                     |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+            </artwork>
+            <t>
+               where:
+            </t>
+            <dl>
+               <dt>
+                  Header Form (HF): 1 bit; HF == 1.
+               </dt>
+               <dd>
+                  The most significant bit (0x80) of byte 0 (the first byte) is set to 1 for version negotiation packets.
+               </dd>
+               <dt>
+                  Unused (T): 6 bits.
+               </dt>
+               <dd>
+                  The value in the Unused field is selected randomly by the server. Clients MUST ignore the value of this field.  Servers SHOULD set the most significant bit of this field (0x40) to 1 so that Version Negotiation packets appear to have the Fixed Bit field.
+               </dd>
+               <dt>
+                  Version: 32 bits; Version == 0.
+               </dt>
+               <dd>
+                  The Version field of a Version Negotiation packet MUST be set to 0x0000000.
+               </dd>
+               <dt>
+                   DCID Len (DLen): 1 byte.
+               </dt>
+               <dd>
+                  This field is as previously define. However, as future versions of QUIC may support Connection IDs larger than the version 1 limit, Version Negotiation packets could carry Connection IDs that are longer than 20 bytes.
+               </dd>
+               <dt>
+                  Destination Connection ID: DLen bytes.
+               </dt>
+               <dd>
+                  The Destination Connection ID field is between 0 and 2^8-1 bytes in length.
+               </dd>
+               <dt>
+                  SCID Len (SLen): 1 byte.
+               </dt>
+               <dd>
+                  This field is as previously define. However, as future versions of QUIC may support Connection IDs larger than the version 1 limit, Version Negotiation packets could carry Connection IDs that are longer than 20 bytes.
+               </dd>
+               <dt>
+                  Source Connection ID: SLen bytes.
+               </dt>
+               <dd>
+                  The Source Connection ID field is between 0 and 2^8-1 bytes in length.
+               </dd>
+               <dt>
+                  Supported Versions: * Version.
+               </dt>
+               <dd>
+                  The remainder of the Version Negotiation packet is a list of 32-bit versions which the server supports.
+               </dd>
+            </dl>
+         </section>
+
         <section anchor='longheader'>
             <name>Long Header Packets</name>
             <t>A long header packet is formatted as follows:</t>
@@ -261,101 +357,6 @@
                     The Source Connection ID field is between 0 and 20 bytes in length.
                 </dd>
             </dl>
-            <section anchor='longheader-version_negotiation'>
-               <name>Version Negotiation Packet</name>
-               <t>A Version is formatted as follows:</t>
-               <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                     Version identifier                        |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-               </artwork>
-               <t>
-                  where:
-               </t>
-               <dl>
-                  <dt>
-                     Version identifier: 32 bits.
-                  </dt>
-                  <dd>
-                     32-bit version identifier.
-                  </dd>
-               </dl>
-               <t>A Version Negotiation packet is formatted as follows:</t>
-               <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |1|   Unused  |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                             Version                           |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |    DCID Len   |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                   Destination Connection ID                 ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |    SCID Len   |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                      Source Connection ID                   ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                      [Supported Versions]                     |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-               </artwork>
-               <t>
-                  where:
-               </t>
-               <dl>
-                  <dt>
-                     Header Form (HF): 1 bit; HF == 1.
-                  </dt>
-                  <dd>
-                     The most significant bit (0x80) of byte 0 (the first byte) is set to 1 for long headers.
-                  </dd>
-                  <dt>
-                     Unused (T): 6 bits.
-                  </dt>
-                  <dd>
-                     The value in the Unused field is selected randomly by the server. Clients MUST ignore the value of this field.  Servers SHOULD set the most significant bit of this field (0x40) to 1 so that Version Negotiation packets appear to have the Fixed Bit field.
-                  </dd>
-                  <dt>
-                     Version: 32 bits; Version == 0.
-                  </dt>
-                  <dd>
-                     The Version field of a Version Negotiation packet MUST be set to 0x0000000.
-                  </dd>
-                  <dt>
-                      DCID Len (DLen): 1 byte.
-                  </dt>
-                  <dd>
-                     This field is as previously define. However, as future versions of QUIC may support Connection IDs larger than the version 1 limit, Version Negotiation packets could carry Connection IDs that are longer than 20 bytes.
-                  </dd>
-                  <dt>
-                     Destination Connection ID: DLen bytes.
-                  </dt>
-                  <dd>
-                     The Destination Connection ID field is between 0 and 2^8-1 bytes in length.
-                  </dd>
-                  <dt>
-                     SCID Len (SLen): 1 byte.
-                  </dt>
-                  <dd>
-                     This field is as previously define. However, as future versions of QUIC may support Connection IDs larger than the version 1 limit, Version Negotiation packets could carry Connection IDs that are longer than 20 bytes.
-                  </dd>
-                  <dt>
-                     Source Connection ID: SLen bytes.
-                  </dt>
-                  <dd>
-                     The Source Connection ID field is between 0 and 2^8-1 bytes in length.
-                  </dd>
-                  <dt>
-                     Supported Versions: * Version.
-                  </dt>
-                  <dd>
-                     The remainder of the Version Negotiation packet is a list of 32-bit versions which the server supports.
-                  </dd>
-               </dl>
-            </section>
             <section anchor='longheader-initial_packet'>
                <name>Initial Packet</name>
                <t>A Variable-Length Integer Encoding is formatted as follows:</t>

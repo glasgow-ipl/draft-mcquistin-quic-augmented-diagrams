@@ -92,6 +92,45 @@
               protocol. It contains only those elements necessary to
               demonstrate the augmented packet header diagram format.
             </t>
+            <t>
+               The QUIC protocol has the following PDUs: a Stateless Reset packet, a Version Negotiation packet, a Protected Initial packet, a Protected 0-RTT packet, a Protected Handshake, a Retry packet, or a Protected Short Header packet.
+            </t>
+        </section>
+
+        <section anchor='protection'>
+            <name>Header and Packet Protection</name>
+            <t>The apply_protection function has the following parameters:</t>
+            <dl>
+               <dt>
+                  first_byte
+               </dt>
+               <dd>
+                  The first byte of the packet to be protected.
+               </dd>
+               <dt>
+                  packet_number
+               </dt>
+               <dd> 
+                  The packet number to be protected.
+               </dd>
+               <dt>
+                  payload
+               </dt>
+               <dd>
+                  The payload to be protected.
+               </dd>
+            </dl>
+            <t>The apply_protection function returns a packet with protection applied.</t>
+            <t>The remove_protection function has the following parameters:</t>
+            <dl>
+               <dt>
+                  protected_packet
+               </dt>
+               <dd>
+                  The packet to remove protection from.
+               </dd>
+            </dl>
+            <t>The remove_protection function returns a packet with protection removed.</t>
         </section>
 
         <section anchor='statelessreset'>

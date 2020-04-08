@@ -394,6 +394,7 @@
                   The Source Connection ID field is between 0 and 20 bytes in length.
                </dd>
             </dl>
+            <t>A Long Header Packet is one of: an Initial Packet, a 0-RTT Packet, a Handshake Packet, or a Retry Packet.</t>
             <t>A Protected Long Header is formatted as follows:</t>
             <artwork>
     0                   1                   2                   3
@@ -471,6 +472,7 @@
                   The Source Connection ID field is between 0 and 20 bytes in length.
                </dd>
             </dl>
+            <t>A Protected Long Header Packet is one of: a Protected Initial Packet, a Protected 0-RTT Packet, or a Protected Handshake Packet.</t>
             <section anchor='longheader-initial_packet'>
                <name>Initial Packet</name>
                <t>An Initial packet is formatted as follows:</t>

@@ -964,7 +964,7 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
 
         <section anchor='frames'>
             <name>Frames and Frame Formats</name>
-            <t>A frame is one of: a PADDING frame, a PING frame, an ACK frame, a RESET_STREAM frame, a STOP_SENDING frame, a CRYPTO frame, a NEW_TOKEN frame, a STREAM frame, a MAX_DATA frame, a MAX_STREAM_DATA frame, a MAX_STREAMS frame, a DATA_BLOCKED frame, a STREAM_DATA_BLOCKED frame, a STREAMS_BLOCKED frame, a NEW_CONNECTION_ID frame, a PATH_CHALLENGE frame, a PATH_RESPONSE frame, a CONNECTION_CLOSE frame, or a HANDSHAKE_DONE frame.</t>
+            <t>A Frame is one of: a PADDING frame, a PING frame, an ACK frame, a RESET_STREAM frame, a STOP_SENDING frame, a CRYPTO frame, a NEW_TOKEN frame, a STREAM frame, a MAX_DATA frame, a MAX_STREAM_DATA frame, a MAX_STREAMS frame, a DATA_BLOCKED frame, a STREAM_DATA_BLOCKED frame, a STREAMS_BLOCKED frame, a NEW_CONNECTION_ID frame, a PATH_CHALLENGE frame, a PATH_RESPONSE frame, a CONNECTION_CLOSE frame, or a HANDSHAKE_DONE frame.</t>
             <section anchor='frames_padding'>
                <name>PADDING frame</name>
                <t>A PADDING Frame is formatted as follows:</t>

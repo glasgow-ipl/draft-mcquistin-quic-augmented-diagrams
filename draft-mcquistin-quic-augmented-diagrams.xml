@@ -458,7 +458,7 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                </dd>
             </dl>
             <t>A Protected Long Header Packet is one of: a Protected Initial Packet, a Protected 0-RTT Packet, or a Protected Handshake Packet.</t>
-            <t>A Protected Long Header Packet is serialised from a Long Header Packet using the apply_protection(HF + FB + T + R + P, Packet Number, Payload) function.</t>
+            <t>A Protected Long Header Packet is constructed from a Long Header Packet using the apply_protection(HF + FB + T + R + P, Packet Number, Payload) function.</t>
             <section anchor='longheader-initial_packet'>
                <name>Initial Packet</name>
                <t>An Initial Packet is formatted as follows:</t>
@@ -959,7 +959,7 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                   Packets with a short header always include a 1-RTT protected payload.
                </dd>
             </dl>
-            <t>A Protected Short Header Packet is serialised from a Short Header Packet using the apply_protection(HF + FB + S + K + P, Packet Number, Payload) function.</t>
+            <t>A Protected Short Header Packet is constructed from a Short Header Packet using the apply_protection(HF + FB + S + K + P, Packet Number, Payload) function.</t>
         </section>
 
         <section anchor='frames'>

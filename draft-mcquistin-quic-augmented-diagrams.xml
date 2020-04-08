@@ -311,12 +311,12 @@
 
         <section anchor='longheader'>
             <name>Long Header Packets</name>
-            <t>A long header packet is formatted as follows:</t>
+            <t>A Long Header is formatted as follows:</t>
             <artwork>
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+
-   |1|1| T |   X   |
+   |1|1| T | R | P |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                             Version                           |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -333,60 +333,66 @@
                 where:
             </t>
             <dl>
-                <dt>
-                    Header Form (HF): 1 bit; HF == 1.
-                </dt>
-                <dd>
-                    The most significant bit (0x80) of byte 0 (the first byte) is set to 1 for long headers.
-                </dd>
-                <dt>
-                    Fixed Bit (FB): 1 bit; FB == 1.
-                </dt>
-                <dd>
-                    The next bit (0x40) of byte 0 is set to 1. Packets containing a zero value for this bit are not valid packets in this version and MUST be discarded.
-                </dd>
-                <dt>
-                    Long Packet Type (T): 2 bits.
-                </dt>
-                <dd>
-                    The next two bits (those with a mask of 0x30) of byte 0 contain a packet type.
-                </dd>
-                <dt>
-                    Type-Specific Bits (X): 4 bits.
-                </dt>
-                <dd>
-                    The lower four bits (those with a mask of 0x0f) of byte 0 are type-specific.
-                </dd>
-                <dt>
-                    Version: 32 bits.
-                </dt>
-                <dd>
-                    This field indicates which version of QUIC is in use and determines how the rest of the protocol fields are interpreted.
-                </dd>
-                <dt>
-                    DCID Len (DLen): 1 byte; DLen &lt;= 20.
-                </dt>
-                <dd>
-                    This field contains the length, in bytes, of the Destination Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
-                </dd>
-                <dt>
-                    Destination Connection ID: DLen bytes.
-                </dt>
-                <dd>
-                    The Destination Connection ID field is between 0 and 20 bytes in length.
-                </dd>
-                <dt>
-                    SCID Len (SLen): 1 byte; SLen &lt;= 20.
-                </dt>
-                <dd>
-                    This field contains the length, in bytes, of the Source Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20 bytes. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
-                </dd>
-                <dt>
-                    Source Connection ID: SLen bytes.
-                </dt>
-                <dd>
-                    The Source Connection ID field is between 0 and 20 bytes in length.
-                </dd>
+               <dt>
+                  Header Form (HF): 1 bit; HF == 1.
+               </dt>
+               <dd>
+                  The most significant bit (0x80) of byte 0 (the first byte) is set to 1 for long headers.
+               </dd>
+               <dt>
+                  Fixed Bit (FB): 1 bit; FB == 1.
+               </dt>
+               <dd>
+                  The next bit (0x40) of byte 0 is set to 1. Packets containing a zero value for this bit are not valid packets in this version and MUST be discarded.
+               </dd>
+               <dt>
+                  Long Packet Type (T): 2 bits.
+               </dt>
+               <dd>
+                  The next two bits (those with a mask of 0x30) of byte 0 contain a packet type.
+               </dd>
+               <dt>
+                  Reserved Bits (R): 2 bits.
+               </dt>
+               <dd>
+                  Two bits (those with a mask of 0x0c) of byte 0 are reserved across multiple packet types. These bits are protected using header protection.
+               </dd>
+               <dt>
+                  Packet Length (P): 2 bits.
+               </dt>
+               <dd>
+                  In packet types which contain a Packet Number field, the least significant two bits (those with a mask of 0x03) of byte 0 contain the length of the packet number, encoded as an unsigned, two-bit integer that is one less than the length of the packet number field in bytes.
+               </dd>
+               <dt>
+                  Version: 32 bits.
+               </dt>
+               <dd>
+                  This field indicates which version of QUIC is in use and determines how the rest of the protocol fields are interpreted.
+               </dd>
+               <dt>
+                  DCID Len (DLen): 1 byte; DLen &lt;= 20.
+               </dt>
+               <dd>
+                  This field contains the length, in bytes, of the Destination Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
+               </dd>
+               <dt>
+                  Destination Connection ID: DLen bytes.
+               </dt>
+               <dd>
+                  The Destination Connection ID field is between 0 and 20 bytes in length.
+               </dd>
+               <dt>
+                  SCID Len (SLen): 1 byte; SLen &lt;= 20.
+               </dt>
+               <dd>
+                  This field contains the length, in bytes, of the Source Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20 bytes. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
+               </dd>
+               <dt>
+                  Source Connection ID: SLen bytes.
+               </dt>
+               <dd>
+                  The Source Connection ID field is between 0 and 20 bytes in length.
+               </dd>
             </dl>
             <section anchor='longheader-initial_packet'>
                <name>Initial Packet</name>
@@ -394,18 +400,10 @@
                <artwork>
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+
-   |1|1| 0 | R | P |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                             Version                           |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |    DCID Len   |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                   Destination Connection ID                 ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |    SCID Len   |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                      Source Connection ID                   ...
+   |                                                               :
+   :                          Long Header                          :
+   :                                                               |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                          Token Length                       ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -423,64 +421,10 @@
                </t>
                <dl>
                   <dt>
-                     Header Form (HF): 1 bit; HF == 1.
-                  </dt>
-                  <dd>
-                     The most significant bit (0x80) of byte 0 (the first byte) is set to 1 for long headers.
-                  </dd>
-                  <dt>
-                     Fixed Bit (FB): 1 bit; FB == 1.
-                  </dt>
-                  <dd>
-                     The next bit (0x40) of byte 0 is set to 1. Packets containing a zero value for this bit are not valid packets in this version and MUST be discarded.
-                  </dd>
-                  <dt>
                      Long Packet Type (T): 2 bits; T == 0.
                   </dt>
                   <dd>
                      An Initial packet uses long headers with a type value of 0x0.
-                  </dd>
-                  <dt>
-                     Reserved Bits (R): 2 bits.
-                  </dt>
-                  <dd>
-                     Two bits (those with a mask of 0x0c) of byte 0 are reserved across multiple packet types. These bits are protected using header protection.
-                  </dd>
-                  <dt>
-                     Packet Length (P): 2 bits.
-                  </dt>
-                  <dd>
-                     In packet types which contain a Packet Number field, the least significant two bits (those with a mask of 0x03) of byte 0 contain the length of the packet number, encoded as an unsigned, two-bit integer that is one less than the length of the packet number field in bytes.
-                  </dd>
-                  <dt>
-                     Version: 32 bits.
-                  </dt>
-                  <dd>
-                     This field indicates which version of QUIC is in use.
-                  </dd>
-                  <dt>
-                     DCID Len (DLen): 1 byte; DLen &lt;= 20.
-                  </dt>
-                  <dd>
-                     This field contains the length, in bytes, of the Destination Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
-                  </dd>
-                  <dt>
-                     Destination Connection ID: DLen bytes.
-                  </dt>
-                  <dd>
-                     The Destination Connection ID field is between 0 and 20 bytes in length.
-                  </dd>
-                  <dt>
-                     SCID Len (SLen): 1 byte; SLen &lt;= 20.
-                  </dt>
-                  <dd>
-                      This field contains the length, in bytes, of the Source Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20 bytes. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
-                  </dd>
-                  <dt>
-                     Source Connection ID: SLen bytes.
-                  </dt>
-                  <dd>
-                     The Source Connection ID field is between 0 and 20 bytes in length.
                   </dd>
                   <dt>
                      Token Length (TL): 1 * Variable-Length Integer Encoding.
@@ -643,18 +587,10 @@
                <artwork>
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+
-   |1|1| 1 | R | P |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                             Version                           |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |    DCID Len   |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                   Destination Connection ID                 ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |    SCID Len   |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                      Source Connection ID                   ...
+   |                                                               :
+   :                          Long Header                          :
+   :                                                               |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                             Length                          ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -668,64 +604,10 @@
                </t>
                <dl>
                   <dt>
-                     Header Form (HF): 1 bit; HF == 1.
-                  </dt>
-                  <dd>
-                     The most significant bit (0x80) of byte 0 (the first byte) is set to 1 for long headers.
-                  </dd>
-                  <dt>
-                     Fixed Bit (FB): 1 bit; FB == 1.
-                  </dt>
-                  <dd>
-                     The next bit (0x40) of byte 0 is set to 1. Packets containing a zero value for this bit are not valid packets in this version and MUST be discarded.
-                  </dd>
-                  <dt>
                      Long Packet Type (T): 2 bits; T == 1.
                   </dt>
                   <dd>
                      A 0-RTT packet uses long headers with a type value of 0x1.
-                  </dd>
-                  <dt>
-                     Reserved Bits (R): 2 bits.
-                  </dt>
-                  <dd>
-                     Two bits (those with a mask of 0x0c) of byte 0 are reserved across multiple packet types. These bits are protected using header protection.
-                  </dd>
-                  <dt>
-                     Packet Length (P): 2 bits.
-                  </dt>
-                  <dd>
-                     In packet types which contain a Packet Number field, the least significant two bits (those with a mask of 0x03) of byte 0 contain the length of the packet number, encoded as an unsigned, two-bit integer that is one less than the length of the packet number field in bytes.
-                  </dd>
-                  <dt>
-                     Version: 32 bits.
-                  </dt>
-                  <dd>
-                     This field indicates which version of QUIC is in use.
-                  </dd>
-                  <dt>
-                     DCID Len (DLen): 1 byte; DLen &lt;= 20.
-                  </dt>
-                  <dd>
-                     This field contains the length, in bytes, of the Destination Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
-                  </dd>
-                  <dt>
-                     Destination Connection ID: DLen bytes.
-                  </dt>
-                  <dd>
-                     The Destination Connection ID field is between 0 and 20 bytes in length.
-                  </dd>
-                  <dt>
-                     SCID Len (SLen): 1 byte; SLen &lt;= 20.
-                  </dt>
-                  <dd>
-                      This field contains the length, in bytes, of the Source Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20 bytes. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
-                  </dd>
-                  <dt>
-                     Source Connection ID: SLen bytes.
-                  </dt>
-                  <dd>
-                     The Source Connection ID field is between 0 and 20 bytes in length.
                   </dd>
                   <dt>
                      Length: 1 * Variable-Length Integer Encoding.
@@ -854,18 +736,10 @@
                <artwork>
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+
-   |1|1| 2 | R | P |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                             Version                           |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |    DCID Len   |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                   Destination Connection ID                 ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |    SCID Len   |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                      Source Connection ID                   ...
+   |                                                               :
+   :                          Long Header                          :
+   :                                                               |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                             Length                          ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -879,64 +753,10 @@
                </t>
                <dl>
                   <dt>
-                     Header Form (HF): 1 bit; HF == 1.
-                  </dt>
-                  <dd>
-                     The most significant bit (0x80) of byte 0 (the first byte) is set to 1 for long headers.
-                  </dd>
-                  <dt>
-                     Fixed Bit (FB): 1 bit; FB == 1.
-                  </dt>
-                  <dd>
-                     The next bit (0x40) of byte 0 is set to 1. Packets containing a zero value for this bit are not valid packets in this version and MUST be discarded.
-                  </dd>
-                  <dt>
                      Long Packet Type (T): 2 bits; T == 2.
                   </dt>
                   <dd>
                      A Handshake packet uses long headers with a type value of 0x2.
-                  </dd>
-                  <dt>
-                     Reserved Bits (R): 2 bits.
-                  </dt>
-                  <dd>
-                     Two bits (those with a mask of 0x0c) of byte 0 are reserved across multiple packet types. These bits are protected using header protection.
-                  </dd>
-                  <dt>
-                     Packet Length (P): 2 bits.
-                  </dt>
-                  <dd>
-                     In packet types which contain a Packet Number field, the least significant two bits (those with a mask of 0x03) of byte 0 contain the length of the packet number, encoded as an unsigned, two-bit integer that is one less than the length of the packet number field in bytes.
-                  </dd>
-                  <dt>
-                     Version: 32 bits.
-                  </dt>
-                  <dd>
-                     This field indicates which version of QUIC is in use.
-                  </dd>
-                  <dt>
-                     DCID Len (DLen): 1 byte; DLen &lt;= 20.
-                  </dt>
-                  <dd>
-                     This field contains the length, in bytes, of the Destination Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
-                  </dd>
-                  <dt>
-                     Destination Connection ID: DLen bytes.
-                  </dt>
-                  <dd>
-                     The Destination Connection ID field is between 0 and 20 bytes in length.
-                  </dd>
-                  <dt>
-                     SCID Len (SLen): 1 byte; SLen &lt;= 20.
-                  </dt>
-                  <dd>
-                      This field contains the length, in bytes, of the Source Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20 bytes. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
-                  </dd>
-                  <dt>
-                     Source Connection ID: SLen bytes.
-                  </dt>
-                  <dd>
-                     The Source Connection ID field is between 0 and 20 bytes in length.
                   </dd>
                   <dt>
                      Length: 1 * Variable-Length Integer Encoding.
@@ -1065,18 +885,10 @@
                <artwork>
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+
-   |1|1| 3 |Unused |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                             Version                           |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |    DCID Len   |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                   Destination Connection ID                 ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |    SCID Len   |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                      Source Connection ID                   ...
+   |                                                               :
+   :                          Long Header                          :
+   :                                                               |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                          Retry Token                        ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -1094,58 +906,10 @@
                </t>
                <dl>
                   <dt>
-                     Header Form (HF): 1 bit; HF == 1.
-                  </dt>
-                  <dd>
-                     The most significant bit (0x80) of byte 0 (the first byte) is set to 1 for long headers.
-                  </dd>
-                  <dt>
-                     Fixed Bit (FB): 1 bit; FB == 1.
-                  </dt>
-                  <dd>
-                     The next bit (0x40) of byte 0 is set to 1. Packets containing a zero value for this bit are not valid packets in this version and MUST be discarded.
-                  </dd>
-                  <dt>
                      Long Packet Type (T): 2 bits; T == 3.
                   </dt>
                   <dd>
                      A Retry packet uses long headers with a type value of 0x3.
-                  </dd>
-                  <dt>
-                     Unused: 4 bits.
-                  </dt>
-                  <dd>
-                     4 unused bits.
-                  </dd>
-                  <dt>
-                     Version: 32 bits.
-                  </dt>
-                  <dd>
-                     This field indicates which version of QUIC is in use.
-                  </dd>
-                  <dt>
-                     DCID Len (DLen): 1 byte; DLen &lt;= 20.
-                  </dt>
-                  <dd>
-                     This field contains the length, in bytes, of the Destination Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
-                  </dd>
-                  <dt>
-                     Destination Connection ID: DLen bytes.
-                  </dt>
-                  <dd>
-                     The Destination Connection ID field is between 0 and 20 bytes in length.
-                  </dd>
-                  <dt>
-                     SCID Len (SLen): 1 byte; SLen &lt;= 20.
-                  </dt>
-                  <dd>
-                      This field contains the length, in bytes, of the Source Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20 bytes. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
-                  </dd>
-                  <dt>
-                     Source Connection ID: SLen bytes.
-                  </dt>
-                  <dd>
-                     The Source Connection ID field is between 0 and 20 bytes in length.
                   </dd>
                   <dt>
                      Retry Token

@@ -1263,33 +1263,7 @@
 
         <section anchor='frames'>
             <name>Frames and Frame Formats</name>
-            <t>A frame is formatted as follows:</t>
-            <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                          Frame Type                         ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                   Type-Dependent Fields                     ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-            </artwork>
-            <t>
-               where:
-            </t>
-            <dl>
-               <dt>
-                  Frame Type: 1 * Variable-Length Integer Encoding.
-               </dt>
-               <dd>
-                  Frame type, encoded as a variable-length integer.
-               </dd>
-               <dt>
-                  Type-Dependent Fields.
-               </dt>
-               <dd>
-                  Additional type-dependent fields.
-               </dd>
-            </dl>
+            <t>A frame is one of: PADDING frame, PING frame, ACK frame, RESET_STREAM frame, STOP_SENDING frame, CRYPTO frame, NEW_TOKEN frame, STREAM frame, MAX_DATA, MAX_STREAM_DATA frame, MAX_STREAMS frame, DATA_BLOCKED frame, STREAM_DATA_BLOCKED frame, STREAMS_BLOCKED frame, NEW_CONNECTION_ID frame, PATH_CHALLENGE frame, PATH_RESPONSE frame, CONNECTION_CLOSE frame, or HANDSHAKE_DONE frame.</t>
             <section anchor='frames_padding'>
                <name>PADDING frame</name>
                <t>A PADDING Frame is formatted as follows:</t>

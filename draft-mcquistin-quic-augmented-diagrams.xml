@@ -133,6 +133,37 @@
             <t>The remove_protection function returns a packet with protection removed.</t>
         </section>
 
+        <section anchor='variableint'>
+            <name>Variable-Length Integer Encoding</name>
+            <t>A Variable-Length Integer Encoding is formatted as follows:</t>
+            <artwork>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|Len|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                             Value                           ...
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+            </artwork>
+            <t>
+               where:
+            </t>
+            <dl>
+               <dt>
+                  Len: 2 bits.
+               </dt>
+               <dd>
+                  The base 2 logarithm of the integer encoding length in bytes.
+               </dd>
+               <dt>
+                  Value: ((2^Len)*8)-2 bits.
+               </dt>
+               <dd>
+                  The integer value encoded in network byte order.
+               </dd>
+            </dl>
+        </section>
+
         <section anchor='statelessreset'>
             <name>Stateless Reset</name>
             <t>A Stateless Reset packet is formatted as follows:</t>
@@ -359,33 +390,6 @@
             </dl>
             <section anchor='longheader-initial_packet'>
                <name>Initial Packet</name>
-               <t>A Variable-Length Integer Encoding is formatted as follows:</t>
-               <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |Len|
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                             Value                           ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-               </artwork>
-               <t>
-                  where:
-               </t>
-               <dl>
-                  <dt>
-                     Len: 2 bits.
-                  </dt>
-                  <dd>
-                     The base 2 logarithm of the integer encoding length in bytes.
-                  </dd>
-                  <dt>
-                     Value: ((2^Len)*8)-2 bits.
-                  </dt>
-                  <dd>
-                     The integer value encoded in network byte order.
-                  </dd>
-               </dl>
                <t>An Initial packet is formatted as follows:</t>
                <artwork>
     0                   1                   2                   3

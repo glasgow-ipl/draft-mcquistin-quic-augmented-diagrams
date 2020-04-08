@@ -93,7 +93,7 @@
               demonstrate the augmented packet header diagram format.
             </t>
             <t>
-               The QUIC protocol has the following PDUs: a Stateless Reset packet, a Version Negotiation packet, a Protected Initial packet, a Protected 0-RTT packet, a Protected Handshake, a Retry packet, or a Protected Short Header packet.
+               The QUIC protocol has the following PDUs: a Stateless Reset packet, a Version Negotiation packet, a Protected Long Header Packet, a Retry packet, or a Protected Short Header packet.
             </t>
         </section>
 

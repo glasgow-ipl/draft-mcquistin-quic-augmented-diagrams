@@ -93,13 +93,13 @@
               demonstrate the augmented packet header diagram format.
             </t>
             <t>
-               The QUIC protocol has the following PDUs: a Stateless Reset Packet, a Version Negotiation Packet, a Protected Long Header Packet, a Retry Packet, or a Protected Short Header Packet.
+               The QUIC protocol is comprised of Stateless Reset Packet, Protected Long Header Packet, Retry Packet, Protected Short Header Packet, and Version Negotiation Packet PDUs.
             </t>
         </section>
 
         <section anchor='protection'>
             <name>Header and Packet Protection</name>
-            <t>A Protected Packet is one of: a Protected Long Header Packet or a Protected Short Header Packet.</t>
+            <t>A Protected Packet is one of: a Protected Long Header Packet, or a Protected Short Header Packet.</t>
             <artwork>
 func apply_protection(first_byte: BitString,
                       packet_number: BitString,
@@ -118,8 +118,8 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
         </section>
 
         <section anchor='variableint'>
-            <name>Variable-Length Integer Encoding</name>
-            <t>A Variable-Length Integer Encoding is formatted as follows:</t>
+            <name>Variable Length Integer Encoding</name>
+            <t>A Variable Length Integer Encoding is formatted as follows:</t>
             <artwork>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -152,19 +152,19 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
             <name>Stateless Reset</name>
             <t>A Stateless Reset Packet is formatted as follows:</t>
             <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |0|1|                    Unpredictable Bits                   ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                                                               |
-   +                                                               +
-   |                                                               |
-   +                     Stateless Reset Token                     +
-   |                                                               |
-   +                                                               +
-   |                                                               |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |0|1|                    Unpredictable Bits                   ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                                                               |
+ +                                                               +
+ |                                                               |
+ +                     Stateless Reset Token                     +
+ |                                                               |
+ +                                                               +
+ |                                                               |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
             </artwork>
             <t>
                 where:
@@ -183,7 +183,7 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                     The next bit (0x40) of byte 0 is set to 1. Packets containing a zero value for this bit are not valid packets in this version and MUST be discarded.
                 </dd>
                 <dt>
-                    Unpredictable Bits: > 38 bits.
+                    Unpredictable Bits (UB): UB.Size > 38.
                 </dt>
                 <dd>
                     The remainder of the first byte and an arbitrary number of bytes following it that are set to unpredictable values.
@@ -197,31 +197,31 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
             </dl>
         </section>
 
-         <section anchor='longheader-version_negotiation'>
-            <name>Version Negotiation Packet</name>
-            <t>A Version is formatted as follows:</t>
-            <artwork>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+        <section anchor='longheader-version_negotiation'>
+           <name>Version Negotiation Packet</name>
+           <t>A Version is formatted as follows:</t>
+           <artwork>
+0                   1                   2                   3
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                     Version identifier                        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-            </artwork>
-            <t>
-               where:
-            </t>
-            <dl>
-               <dt>
-                  Version identifier: 32 bits.
-               </dt>
-               <dd>
-                  32-bit version identifier.
-               </dd>
-            </dl>
-            <t>A Version Negotiation Packet is formatted as follows:</t>
-            <artwork>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+           </artwork>
+           <t>
+              where:
+           </t>
+           <dl>
+              <dt>
+                 Version identifier (ID): 32 bits.
+              </dt>
+              <dd>
+                 32-bit version identifier.
+              </dd>
+           </dl>
+           <t>A Version Negotiation Packet is formatted as follows:</t>
+           <artwork>
+0                   1                   2                   3
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |1|   Unused  |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -237,81 +237,81 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                      [Supported Versions]                     |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-            </artwork>
-            <t>
-               where:
-            </t>
-            <dl>
-               <dt>
-                  Header Form (HF): 1 bit; HF == 1.
-               </dt>
-               <dd>
-                  The most significant bit (0x80) of byte 0 (the first byte) is set to 1 for version negotiation packets.
-               </dd>
-               <dt>
-                  Unused (T): 6 bits.
-               </dt>
-               <dd>
-                  The value in the Unused field is selected randomly by the server. Clients MUST ignore the value of this field.  Servers SHOULD set the most significant bit of this field (0x40) to 1 so that Version Negotiation packets appear to have the Fixed Bit field.
-               </dd>
-               <dt>
-                  Version: 32 bits; Version == 0.
-               </dt>
-               <dd>
-                  The Version field of a Version Negotiation packet MUST be set to 0x0000000.
-               </dd>
-               <dt>
-                   DCID Len (DLen): 1 byte.
-               </dt>
-               <dd>
-                  This field is as previously define. However, as future versions of QUIC may support Connection IDs larger than the version 1 limit, Version Negotiation packets could carry Connection IDs that are longer than 20 bytes.
-               </dd>
-               <dt>
-                  Destination Connection ID: DLen bytes.
-               </dt>
-               <dd>
-                  The Destination Connection ID field is between 0 and 2^8-1 bytes in length.
-               </dd>
-               <dt>
-                  SCID Len (SLen): 1 byte.
-               </dt>
-               <dd>
-                  This field is as previously define. However, as future versions of QUIC may support Connection IDs larger than the version 1 limit, Version Negotiation packets could carry Connection IDs that are longer than 20 bytes.
-               </dd>
-               <dt>
-                  Source Connection ID: SLen bytes.
-               </dt>
-               <dd>
-                  The Source Connection ID field is between 0 and 2^8-1 bytes in length.
-               </dd>
-               <dt>
-                  Supported Versions: * Version.
-               </dt>
-               <dd>
-                  The remainder of the Version Negotiation packet is a list of 32-bit versions which the server supports.
-               </dd>
-            </dl>
-         </section>
+           </artwork>
+           <t>
+              where:
+           </t>
+           <dl>
+              <dt>
+                 Header Form (HF): 1 bit; HF == 1.
+              </dt>
+              <dd>
+                 The most significant bit (0x80) of byte 0 (the first byte) is set to 1 for version negotiation packets.
+              </dd>
+              <dt>
+                 Unused (T): 6 bits.
+              </dt>
+              <dd>
+                 The value in the Unused field is selected randomly by the server. Clients MUST ignore the value of this field.  Servers SHOULD set the most significant bit of this field (0x40) to 1 so that Version Negotiation packets appear to have the Fixed Bit field.
+              </dd>
+              <dt>
+                 Version: 1 Version; Version.ID == 0.
+              </dt>
+              <dd>
+                 The Version field of a Version Negotiation packet MUST be set to 0x0000000.
+              </dd>
+              <dt>
+                  DCID Len (DLen): 1 byte.
+              </dt>
+              <dd>
+                 This field is as previously define. However, as future versions of QUIC may support Connection IDs larger than the version 1 limit, Version Negotiation packets could carry Connection IDs that are longer than 20 bytes.
+              </dd>
+              <dt>
+                 Destination Connection ID: DLen bytes.
+              </dt>
+              <dd>
+                 The Destination Connection ID field is between 0 and 2^8-1 bytes in length.
+              </dd>
+              <dt>
+                 SCID Len (SLen): 1 byte.
+              </dt>
+              <dd>
+                 This field is as previously define. However, as future versions of QUIC may support Connection IDs larger than the version 1 limit, Version Negotiation packets could carry Connection IDs that are longer than 20 bytes.
+              </dd>
+              <dt>
+                 Source Connection ID: SLen bytes.
+              </dt>
+              <dd>
+                 The Source Connection ID field is between 0 and 2^8-1 bytes in length.
+              </dd>
+              <dt>
+                 Supported Versions: [Version].
+              </dt>
+              <dd>
+                 The remainder of the Version Negotiation packet is a list of 32-bit versions which the server supports.
+              </dd>
+           </dl>
+        </section>
 
         <section anchor='longheader'>
             <name>Long Header Packets</name>
             <t>A Long Header is formatted as follows:</t>
             <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+
-   |1|1| T | R | P |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                             Version                           |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |    DCID Len   |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                   Destination Connection ID                 ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |    SCID Len   |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                      Source Connection ID                   ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+
+ |1|1| T | R | P |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                             Version                           |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |    DCID Len   |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                   Destination Connection ID                 ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |    SCID Len   |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                      Source Connection ID                   ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
             </artwork>
             <t>
                 where:
@@ -348,7 +348,7 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                   In packet types which contain a Packet Number field, the least significant two bits (those with a mask of 0x03) of byte 0 contain the length of the packet number, encoded as an unsigned, two-bit integer that is one less than the length of the packet number field in bytes.
                </dd>
                <dt>
-                  Version: 32 bits.
+                  Version: 1 Version.
                </dt>
                <dd>
                   This field indicates which version of QUIC is in use and determines how the rest of the protocol fields are interpreted.
@@ -378,25 +378,25 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                   The Source Connection ID field is between 0 and 20 bytes in length.
                </dd>
             </dl>
-            <t>A Long Header Packet is one of: an Initial Packet, a 0-RTT Packet, a Handshake Packet, or a Retry Packet.</t>
+            <t>A Long Header Packet is one of: an Initial Packet, a 0RTT Packet, a Handshake Packet, or a Retry Packet.</t>
             <t>A Long Header Packet is constructed from a Protected Long Header Packet using the remove_protection(Protected Long Header Packet) function.</t>
             <t>A Protected Long Header is formatted as follows:</t>
             <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+
-   |1|1| T | PBits |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                             Version                           |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |    DCID Len   |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                   Destination Connection ID                 ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |    SCID Len   |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                      Source Connection ID                   ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+
+ |1|1| T | PBits |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                             Version                           |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |    DCID Len   |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                   Destination Connection ID                 ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |    SCID Len   |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                      Source Connection ID                   ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
             </artwork>
             <t>
                 where:
@@ -427,7 +427,7 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                   4 bits protected using header protection.
                </dd>
                <dt>
-                  Version: 32 bits.
+                  Version: 1 Version.
                </dt>
                <dd>
                   This field indicates which version of QUIC is in use and determines how the rest of the protocol fields are interpreted.
@@ -445,7 +445,7 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                   The Destination Connection ID field is between 0 and 20 bytes in length.
                </dd>
                <dt>
-                  SCID Len (SLen): 1 byte; SLen &lt;= 20.q
+                  SCID Len (SLen): 1 byte; SLen &lt;= 20.
                </dt>
                <dd>
                   This field contains the length, in bytes, of the Source Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20 bytes. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
@@ -457,42 +457,42 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                   The Source Connection ID field is between 0 and 20 bytes in length.
                </dd>
             </dl>
-            <t>A Protected Long Header Packet is one of: a Protected Initial Packet, a Protected 0-RTT Packet, or a Protected Handshake Packet.</t>
+            <t>A Protected Long Header Packet is one of: a Protected Initial Packet, a Protected 0RTT Packet, or a Protected Handshake Packet.</t>
             <t>A Protected Long Header Packet is constructed from a Long Header Packet using the apply_protection(HF + FB + T + R + P, Packet Number, Payload) function.</t>
             <section anchor='longheader-initial_packet'>
                <name>Initial Packet</name>
                <t>An Initial Packet is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                                                               :
-   :                          Long Header                          :
-   :                                                               |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                          Token Length                       ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                             Token                           ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                             Length                          ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                          Packet Number                      ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                             Payload                         ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                                                               :
+ :                          Long Header                          :
+ :                                                               |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                          Token Length                       ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                             Token                           ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                             Length                          ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                          Packet Number                      ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                             Payload                         ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Long Packet Type (T): 2 bits; T == 0.
+                     Long Header (LH): 1 Long Header; LH.T == 0.
                   </dt>
                   <dd>
                      An Initial packet uses long headers with a type value of 0x0.
                   </dd>
                   <dt>
-                     Token Length (TL): 1 * Variable-Length Integer Encoding.
+                     Token Length (TL): 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer specifying the length of the Token field, in bytes.
@@ -504,19 +504,19 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                      The value of the token that was previously provided in a Retry packet or NEW_TOKEN frame.
                   </dd>
                   <dt>
-                     Length: 1 * Variable-Length Integer Encoding.
+                     Length: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      The length of the remainder of the packet (that is, the Packet Number and Payload fields) in bytes, encoded as a variable-length integer.
                   </dd>
                   <dt>
-                     Packet Number: P+1 bytes.
+                     Packet Number: LH.P+1 bytes.
                   </dt>
                   <dd>
                      The packet number field.
                   </dd>
                   <dt>
-                     Payload: * Frame.
+                     Payload: [Frame].
                   </dt>
                   <dd>
                      The payload field, comprised of multiple frames.
@@ -524,36 +524,36 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                </dl>
                <t>A Protected Initial packet is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                                                               :
-   :                          Long Header                          :
-   :                                                               |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                          Token Length                       ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                             Token                           ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                             Length                          ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                    Protected Packet Number                  ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                       Protected Payload                     ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                                                               :
+ :                          Long Header                          :
+ :                                                               |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                          Token Length                       ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                             Token                           ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                             Length                          ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                    Protected Packet Number                  ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                       Protected Payload                     ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Long Packet Type (T): 2 bits; T == 0.
+                    Long Header (LH): 1 Long Header; LH.T == 0.
                   </dt>
                   <dd>
                      An Initial packet uses long headers with a type value of 0x0.
                   </dd>
                   <dt>
-                     Token Length (TL): 1 * Variable-Length Integer Encoding.
+                     Token Length (TL): 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer specifying the length of the Token field, in bytes.
@@ -565,19 +565,19 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                      The value of the token that was previously provided in a Retry packet or NEW_TOKEN frame.
                   </dd>
                   <dt>
-                     Length: 1 * Variable-Length Integer Encoding.
+                     Length: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      The length of the remainder of the packet (that is, the Packet Number and Payload fields) in bytes, encoded as a variable-length integer.
                   </dd>
                   <dt>
-                     Protected Packet Number: P+1 bytes.
+                     Protected Packet Number: LH.P+1 bytes.
                   </dt>
                   <dd>
                      The packet number field, with header protection.
                   </dd>
                   <dt>
-                     Protected Payload: (Length.Value-(P+1)) bytes.
+                     Protected Payload: (Length.Value-(LH.P+1)) bytes.
                   </dt>
                   <dd>
                      The protected payload field.
@@ -585,92 +585,92 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                </dl>
             </section>
             <section anchor='longheader-0tt_packet'>
-               <name>0-RTT Packet</name>
-               <t>A 0-RTT Packet is formatted as follows:</t>
+               <name>0RTT Packet</name>
+               <t>A 0RTT Packet is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                                                               :
-   :                          Long Header                          :
-   :                                                               |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                             Length                          ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                          Packet Number                      ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                             Payload                         ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                                                               :
+ :                          Long Header                          :
+ :                                                               |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                             Length                          ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                          Packet Number                      ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                             Payload                         ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Long Packet Type (T): 2 bits; T == 1.
+                     Long Header (LH): 1 Long Header; LH.T == 1.
                   </dt>
                   <dd>
                      A 0-RTT packet uses long headers with a type value of 0x1.
                   </dd>
                   <dt>
-                     Length: 1 * Variable-Length Integer Encoding.
+                     Length: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      The length of the remainder of the packet (that is, the Packet Number and Payload fields) in bytes, encoded as a variable-length integer.
                   </dd>
                   <dt>
-                     Packet Number: P+1 bytes.
+                     Packet Number: LH.P+1 bytes.
                   </dt>
                   <dd>
                      The packet number field.
                   </dd>
                   <dt>
-                     Payload: * Frame.
+                     Payload: [Frame].
                   </dt>
                   <dd>
                      The payload field, comprised of multiple frames.
                   </dd>
                </dl>
-               <t>A Protected 0-RTT Packet is formatted as follows:</t>
+               <t>A Protected 0RTT Packet is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                                                               :
-   :                          Long Header                          :
-   :                                                               |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                             Length                          ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                    Protected Packet Number                  ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                       Protected Payload                     ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                                                               :
+ :                          Long Header                          :
+ :                                                               |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                             Length                          ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                    Protected Packet Number                  ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                       Protected Payload                     ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Long Packet Type (T): 2 bits; T == 1.
+                     Long Header (LH): 1 Long Header; LH.T == 1.
                   </dt>
                   <dd>
                      A 0-RTT packet uses long headers with a type value of 0x1.
                   </dd>
                   <dt>
-                     Length: 1 * Variable-Length Integer Encoding.
+                     Length: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      The length of the remainder of the packet (that is, the Packet Number and Payload fields) in bytes, encoded as a variable-length integer.
                   </dd>
                   <dt>
-                     Protected Packet Number: P+1 bytes.
+                     Protected Packet Number: LH.P+1 bytes.
                   </dt>
                   <dd>
                      The packet number field, with header protection.
                   </dd>
                   <dt>
-                     Protected Payload: (Length.Value-(P+1)) bytes.
+                     Protected Payload: (Length.Value-(LH.P+1)) bytes.
                   </dt>
                   <dd>
                      The protected payload field.
@@ -681,44 +681,44 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                <name>Handshake Packet</name>
                <t>A Handshake Packet is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                                                               :
-   :                          Long Header                          :
-   :                                                               |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                             Length                          ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                          Packet Number                      ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                             Payload                         ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                                                               :
+ :                          Long Header                          :
+ :                                                               |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                             Length                          ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                          Packet Number                      ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                             Payload                         ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Long Packet Type (T): 2 bits; T == 2.
+                     Long Header (LH): 1 Long Header; LH.T == 2.
                   </dt>
                   <dd>
                      A Handshake packet uses long headers with a type value of 0x2.
                   </dd>
                   <dt>
-                     Length: 1 * Variable-Length Integer Encoding.
+                     Length: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      The length of the remainder of the packet (that is, the Packet Number and Payload fields) in bytes, encoded as a variable-length integer.
                   </dd>
                   <dt>
-                     Packet Number: P+1 bytes.
+                     Packet Number: LH.P+1 bytes.
                   </dt>
                   <dd>
                      The packet number field.
                   </dd>
                   <dt>
-                     Payload: * Frame.
+                     Payload: [Frame].
                   </dt>
                   <dd>
                      The payload field, comprised of multiple frames.
@@ -726,44 +726,44 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                </dl>
                <t>A Protected Handshake packet is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                                                               :
-   :                          Long Header                          :
-   :                                                               |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                             Length                          ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                    Protected Packet Number                  ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                       Protected Payload                     ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                                                               :
+ :                          Long Header                          :
+ :                                                               |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                             Length                          ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                    Protected Packet Number                  ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                       Protected Payload                     ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Long Packet Type (T): 2 bits; T == 2.
+                     Long Header (LH): 1 Long Header; LH.T == 2.
                   </dt>
                   <dd>
                      A Handshake packet uses long headers with a type value of 0x2.
                   </dd>
                   <dt>
-                     Length: 1 * Variable-Length Integer Encoding.
+                     Length: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      The length of the remainder of the packet (that is, the Packet Number and Payload fields) in bytes, encoded as a variable-length integer.
                   </dd>
                   <dt>
-                     Protected Packet Number: P+1 bytes.
+                     Protected Packet Number: LH.P+1 bytes.
                   </dt>
                   <dd>
                      The packet number field, with header protection.
                   </dd>
                   <dt>
-                     Protected Payload: (Length.Value-(P+1)) bytes.
+                     Protected Payload: (Length.Value-(LH.P+1)) bytes.
                   </dt>
                   <dd>
                      The protected payload field.
@@ -774,36 +774,36 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                <name>Retry Packet</name>
                <t>A Retry Packet is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                                                               :
-   :                          Long Header                          :
-   :                                                               |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                          Retry Token                        ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                                                               |
-   +                                                               +
-   |                                                               |
-   +                     Retry Integrity Tag                       +
-   |                                                               |
-   +                                                               +
-   |                                                               |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                                                               :
+ :                          Long Header                          :
+ :                                                               |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                          Retry Token                        ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                                                               |
+ +                                                               +
+ |                                                               |
+ +                     Retry Integrity Tag                       +
+ |                                                               |
+ +                                                               +
+ |                                                               |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Long Packet Type (T): 2 bits; T == 3.
+                     Long Header (LH): 1 Long Header; LH.T == 3.
                   </dt>
                   <dd>
                      A Retry packet uses long headers with a type value of 0x3.
                   </dd>
                   <dt>
-                     Retry Token
+                     Retry Token.
                   </dt>
                   <dd>
                      An opaque token that the server can use to validate the client's address.
@@ -822,19 +822,19 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
             <name>Short Header Packets</name>
             <t>A Short Header Packet is formatted as follows:</t>
             <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+
-   |0|1|S| R |K| P |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                   Destination Connection ID                 ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                         Packet Number                       ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                                                               :
-   :                            Payload                            :
-   :                                                               |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+
+ |0|1|S| R |K| P |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                   Destination Connection ID                 ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                         Packet Number                       ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                                                               :
+ :                            Payload                            :
+ :                                                               |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
             </artwork>
             <t>
                where:
@@ -889,7 +889,7 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                   The packet number field is 1 to 4 bytes long. The packet number has confidentiality protection separate from packet protection.  The length of the packet number field is encoded in Packet Number Length field.
                </dd>
                <dt>
-                  Payload: * Frame.
+                  Payload: [Frame].
                </dt>
                <dd>
                   The payload field, comprised of multiple frames.
@@ -898,19 +898,19 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
             <t>A Short Header Packet is constructed from a Protected Short Header Packet using the remove_protection(Protected Short Header Packet) function.</t>
             <t>A Protected Short Header Packet is formatted as follows:</t>
             <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+
-   |0|1|S| ProcRKP |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                   Destination Connection ID                 ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                    Protected Packet Number                  ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                                                               :
-   :                       Protected Payload                       :
-   :                                                               |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+
+ |0|1|S| ProcRKP |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                   Destination Connection ID                 ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                    Protected Packet Number                  ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                                                               :
+ :                       Protected Payload                       :
+ :                                                               |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
             </artwork>
             <t>
                where:
@@ -935,7 +935,7 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                   The third most significant bit (0x20) of byte 0 is the latency spin bit.
                </dd>
                <dt>
-                  Protected Reserved Bits, Key Phase, and Packet Number Length (ProcRKP): 5 bits.
+                  Protected Bits (ProcRKP): 5 bits.
                </dt>
                <dd>
                   Five header protected bits.
@@ -947,13 +947,13 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                   The Destination Connection ID is a connection ID that is chosen by the intended recipient of the packet.
                </dd>
                <dt>
-                  Packet Number: P+1 bytes.
+                  Packet Number.
                </dt>
                <dd>
                   The packet number field is 1 to 4 bytes long. The packet number has confidentiality protection separate from packet protection.  The length of the packet number field is encoded in Packet Number Length field.
                </dd>
                <dt>
-                  Protected Payload.
+                  Protected Payload: [Frame].
                </dt>
                <dd>
                   Packets with a short header always include a 1-RTT protected payload.
@@ -969,18 +969,18 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                <name>PADDING frame</name>
                <t>A PADDING Frame is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |       0       |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |       0       |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 0.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 0.
                   </dt>
                   <dd>
                      Frame type, set to 0 for PADDING frames.
@@ -991,18 +991,18 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                <name>PING frame</name>
                <t>A PING Frame is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |       1       |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |       1       |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 1.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 1.
                   </dt>
                   <dd>
                      Frame type, set to 1 for PING frames.
@@ -1013,26 +1013,26 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                <name>ACK frame</name>
                <t>An ACK Range is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                             Gap                             ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                      ACK Packet Range                       ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                             Gap                             ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                      ACK Packet Range                       ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Gap: 1 * Variable-Length Integer Encoding.
+                     Gap: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer indicating the number of contiguous unacknowledged packets preceding the packet number one lower than the smallest in the preceding ACK Range.
                   </dd>
                   <dt>
-                     ACK Packet Range: 1 * Variable-Length Integer Encoding.
+                     ACK Packet Range: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer indicating the number of contiguous acknowledged packets preceding the largest packet number, as determined by the preceding Gap.
@@ -1040,34 +1040,34 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                </dl>
                <t>An ECN Count is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                         ECT(0) Count                        ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                         ECT(1) Count                        ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                         ECN-CE Count                        ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                         ECT0 Count                        ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                         ECT1 Count                        ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                         ECNCE Count                        ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     ECT(0) Count: 1 * Variable-Length Integer Encoding.
+                     ECT0 Count: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer representing the total number of packets received with the ECT(0) codepoint in the packet number space of the ACK frame.
                   </dd>
                   <dt>
-                     ECT(1) Count: 1 * Variable-Length Integer Encoding.
+                     ECT1 Count: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer representing the total number of packets received with the ECT(1) codepoint in the packet number space of the ACK frame.
                   </dd>
                   <dt>
-                     ECN-CE Count: 1 * Variable-Length Integer Encoding.
+                     ECNCE Count: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer representing the total number of packets received with the CE codepoint in the packet number space of the ACK frame.
@@ -1075,66 +1075,66 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                </dl>
                <t>An ACK Frame is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |   Frame Type  |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                     Largest Acknowledged                    ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                          ACK Delay                          ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                       ACK Range Count                       ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                       First ACK Range                       ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                     [Other ACK Ranges]                      ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                         ECN Counts                          ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |   Frame Type  |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                     Largest Acknowledged                    ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                          ACK Delay                          ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                       ACK Range Count                       ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                       First ACK Range                       ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                     [Other ACK Ranges]                      ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                         ECN Counts                          ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 3 || FT == 4.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; (FT.Value == 3) || (FT.Value == 4).
                   </dt>
                   <dd>
                      Frame type, set to 3 or 4 for ACK frames.
                   </dd>
                   <dt>
-                     Largest Acknowledged: 1 * Variable-Length Integer Encoding.
+                     Largest Acknowledged: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer representing the largest packet number the peer is acknowledging; this is usually the largest packet number that the peer has received prior to generating the ACK frame. Unlike the packet number in the QUIC long or short header, the value in an ACK frame is not truncated.
                   </dd>
                   <dt>
-                     ACK Delay: 1 * Variable-Length Integer Encoding.
+                     ACK Delay: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer representing the time delta in microseconds between when this ACK was sent and when the largest acknowledged packet, as indicated in the Largest Acknowledged field, was received by this peer.
                   </dd>
                   <dt>
-                     ACK Range Count (RangeCount): 1 * Variable-Length Integer Encoding.
+                     ACK Range Count (RangeCount): 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer specifying the number of Gap and ACK Range fields in the frame.
                   </dd>
                   <dt>
-                     First ACK Range: 1 * ACK Range.
+                     First ACK Range: 1 ACK Range.
                   </dt>
                   <dd>
                      The First ACK Range is encoded as an ACK Range starting from the Largest Acknowledged.
                   </dd>
                   <dt>
-                     Other ACK Ranges: (RangeCount - 1) * ACK Range.
+                     Other ACK Ranges: [ACK Range].
                   </dt>
                   <dd>
                      Contains additional ranges of packets which are alternately not acknowledged and acknowledged.
                   </dd>
                   <dt>
-                     ECN Counts: 1 * ECN Count; present only when FT == 3.
+                     ECN Counts: 1 ECN Count; present only when FT.Value == 3.
                   </dt>
                   <dd>
                      The three ECN Counts.
@@ -1145,42 +1145,42 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                <name>RESET_STREAM frame</name>
                <t>A RESET_STREAM Frame is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |       4       |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                           Stream ID                         ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                    Application Error Code                   ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                          Final Size                         ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |       4       |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                           Stream ID                         ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                    Application Error Code                   ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                          Final Size                         ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 4.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 4.
                   </dt>
                   <dd>
                      Frame type, set to 4 for RESET_STREAM frames.
                   </dd>
                   <dt>
-                     Stream ID: 1 * Variable-Length Integer Encoding.
+                     Stream ID: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer encoding of the Stream ID of the stream being terminated.
                   </dd>
                   <dt>
-                     Application Error Code: 1 * Variable-Length Integer Encoding.
+                     Application Error Code: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer containing the application protocol error code which indicates why the stream is being closed.
                   </dd>
                   <dt>
-                     Final Size: 1 * Variable-Length Integer Encoding.
+                     Final Size: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer indicating the final size of the stream by the RESET_STREAM sender, in unit of bytes.
@@ -1191,34 +1191,34 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                <name>STOP_SENDING frame</name>
                <t>A STOP_SENDING Frame is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |       5       |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                           Stream ID                         ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                    Application Error Code                   ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |       5       |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                           Stream ID                         ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                    Application Error Code                   ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 5.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 5.
                   </dt>
                   <dd>
                      Frame type, set to 5 for STOP_SENDING frames.
                   </dd>
                   <dt>
-                     Stream ID: 1 * Variable-Length Integer Encoding.
+                     Stream ID: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer carrying the Stream ID of the stream being ignored.
                   </dd>
                   <dt>
-                     Application Error Code: 1 * Variable-Length Integer Encoding.
+                     Application Error Code: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer containing the application-specified reason the sender is ignoring the stream.
@@ -1229,44 +1229,44 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                <name>CRYPTO frame</name>
                <t>A CRYPTO Frame is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |       6       |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                            Offset                           ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                            Length                           ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                                                               :
-   :                         Crypto Data                           :
-   :                                                               |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |       6       |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                            Offset                           ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                            Length                           ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                                                               :
+ :                         Crypto Data                           :
+ :                                                               |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 6.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 6.
                   </dt>
                   <dd>
                      Frame type, set to 6 for CRYPTO frames.
                   </dd>
                   <dt>
-                     Offset: 1 * Variable-Length Integer Encoding.
+                     Offset: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer specifying the byte offset in the stream for the data in this CRYPTO frame.
                   </dd>
                   <dt>
-                     Length: 1 * Variable-Length Integer Encoding.
+                     Length: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer specifying the length of the Crypto Data field in this CRYPTO frame.
                   </dd>
                   <dt>
-                     Crypto Data: Length bytes.
+                     Crypto Data: Length.Value bytes.
                   </dt>
                   <dd>
                      The cryptographic message data.
@@ -1277,36 +1277,36 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                <name>NEW_TOKEN frame</name>
                <t>A NEW_TOKEN Frame is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |       7       |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                         Token Length                        ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                                                               :
-   :                            Token                              :
-   :                                                               |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |       7       |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                         Token Length                        ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                                                               :
+ :                            Token                              :
+ :                                                               |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 7.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 7.
                   </dt>
                   <dd>
                      Frame type, set to 7 for NEW_TOKEN frames.
                   </dd>
                   <dt>
-                     Token Length (TL): 1 * Variable-Length Integer Encoding.
+                     Token Length (TL): 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer specifying the length of the token in bytes.
                   </dd>
                   <dt>
-                     Token: TL bytes.
+                     Token: TL.Value bytes.
                   </dt>
                   <dd>
                      An opaque blob that the client may use with a future Initial packet.
@@ -1317,21 +1317,21 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                <name>STREAM frame</name>
                <t>A STREAM Frame is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |    1    |O|L|F|
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                          Stream ID                          ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                            Offset                           ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                            Length                           ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                                                               :
-   :                         Stream Data                           :
-   :                                                               |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |    1    |O|L|F|
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                          Stream ID                          ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                            Offset                           ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                            Length                           ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                                                               :
+ :                         Stream Data                           :
+ :                                                               |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
@@ -1362,25 +1362,25 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                      Set only on frames that contain the final size of the stream.
                   </dd>
                   <dt>
-                     Stream ID: 1 * Variable-Length Integer Encoding.
+                     Stream ID: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer indicating the stream ID of the stream.
                   </dd>
                   <dt>
-                     Offset: 1 * Variable-Length Integer Encoding; present only when O == 1.
+                     Offset: 1 Variable Length Integer Encoding; present only when O == 1.
                   </dt>
                   <dd>
                      A variable-length integer specifying the byte offset in the stream for the data in this STREAM frame.
                   </dd>
                   <dt>
-                     Length: 1 * Variable-Length Integer Encoding; present only when L == 1.
+                     Length: 1 Variable Length Integer Encoding; present only when L == 1.
                   </dt>
                   <dd>
                      A variable-length integer specifying the length of the Stream Data field in this STREAM frame.  This field is present when the LEN bit is set to 1.  When the LEN bit is set to 0, the Stream Data field consumes all the remaining bytes in the packet.
                   </dd>
                   <dt>
-                     Stream Data: Length bytes.
+                     Stream Data: Length.Value bytes.
                   </dt>
                   <dd>
                      The bytes from the designated stream to be delivered.
@@ -1391,26 +1391,26 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                <name>MAX_DATA frame</name>
                <t>A MAX_DATA Frame is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |       16      |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                         Maximum Data                        ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |       16      |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                         Maximum Data                        ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 16.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 16.
                   </dt>
                   <dd>
                      Frame type, set to 16 for MAX_DATA frames.
                   </dd>
                   <dt>
-                     Maximum Data: 1 * Variable-Length Integer Encoding.
+                     Maximum Data: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer indicating the maximum amount of data that can be sent on the entire connection, in units of bytes.
@@ -1421,34 +1421,34 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                <name>MAX_STREAM_DATA frame</name>
                <t>A MAX_STREAM_DATA Frame is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |       17      |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                          Stream ID                          ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                      Maximum Stream Data                    ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |       17      |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                          Stream ID                          ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                      Maximum Stream Data                    ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 17.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 17.
                   </dt>
                   <dd>
                      Frame type, set to 17 for MAX_STREAM_DATA frames.
                   </dd>
                   <dt>
-                     Stream ID: 1 * Variable-Length Integer Encoding.
+                     Stream ID: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      The stream ID of the stream that is affected encoded as a variable-length integer.
                   </dd>
                   <dt>
-                     Maximum Stream Data: 1 * Variable-Length Integer Encoding.
+                     Maximum Stream Data: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer indicating the maximum amount of data that can be sent on the identified stream, in units of bytes.
@@ -1459,26 +1459,26 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                <name>MAX_STREAMS frame</name>
                <t>A MAX_STREAMS Frame is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |       FT      |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                        Maximum Streams                      ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |       FT      |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                        Maximum Streams                      ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 18 || FT == 19.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; (FT.Value == 18) || (FT.Value == 19).
                   </dt>
                   <dd>
                      Frame type, set to 18 or 19 for MAX_STREAMS frames.
                   </dd>
                   <dt>
-                     Maximum Streams: 1 * Variable-Length Integer Encoding.
+                     Maximum Streams: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A count of the cumulative number of streams of the corresponding type that can be opened over the lifetime of the connection.
@@ -1502,13 +1502,13 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 20.
+                     Frame Type (FT): 1 Variable-Length Integer Encoding; FT.Value == 20.
                   </dt>
                   <dd>
                      Frame type, set to 20 for DATA_BLOCKED frames.
                   </dd>
                   <dt>
-                     Data Limit: 1 * Variable-Length Integer Encoding.
+                     Data Limit: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer indicating the connection-level limit at which blocking occurred.
@@ -1534,19 +1534,19 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 21.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 21.
                   </dt>
                   <dd>
                      Frame type, set to 21 for STREAM_DATA_BLOCKED frames.
                   </dd>
                   <dt>
-                     Stream ID: 1 * Variable-Length Integer Encoding.
+                     Stream ID: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer indicating the stream which is flow control blocked.
                   </dd>
                   <dt>
-                     Maximum Stream Data: 1 * Variable-Length Integer Encoding.
+                     Maximum Stream Data: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer indicating the offset of the stream at which the blocking occurred.
@@ -1557,26 +1557,26 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                <name>STREAMS_BLOCKED frame</name>
                <t>A STREAMS_BLOCKED Frame is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |       FT      |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                         Stream Limit                        ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |       FT      |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                         Stream Limit                        ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 22 || FT == 23.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; (FT.Value == 22) || (FT.Value == 23).
                   </dt>
                   <dd>
                      Frame type, set to 22 or 23 for STREAMS_BLOCKED frames.
                   </dd>
                   <dt>
-                     Stream Limit: 1 * Variable-Length Integer Encoding.
+                     Stream Limit: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer indicating the stream limit at the time the frame was sent.
@@ -1587,46 +1587,46 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                <name>NEW_CONNECTION_ID frame</name>
                <t>A NEW_CONNECTION_ID Frame is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |       24      |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                         Sequence Number                     ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                         Retire Prior To                     ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |     Length    |                                               |
-   +-+-+-+-+-+-+-+-+            Connection ID                      +
-   |                                                             ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                                                               |
-   +                                                               +
-   |                                                               |
-   +                      Stateless Reset Token                    +
-   |                                                               |
-   +                                                               +
-   |                                                               |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |       24      |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                         Sequence Number                     ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                         Retire Prior To                     ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |     Length    |                                               |
+ +-+-+-+-+-+-+-+-+            Connection ID                      +
+ |                                                             ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                                                               |
+ +                                                               +
+ |                                                               |
+ +                      Stateless Reset Token                    +
+ |                                                               |
+ +                                                               +
+ |                                                               |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 24.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 24.
                   </dt>
                   <dd>
                      Frame type, set to 24 for NEW_CONNECTION_ID frames.
                   </dd>
                   <dt>
-                     Sequence Number: 1 * Variable-Length Integer Encoding.
+                     Sequence Number: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      The sequence number assigned to the connection ID by the sender.
                   </dd>
                   <dt>
-                     Retire Prior To: 1 * Variable-Length Integer Encoding.
+                     Retire Prior To: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer indicating which connection IDs should be retired.
@@ -1655,26 +1655,26 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                <name>RETIRE_CONNECTION_ID frame</name>
                <t>A RETIRE_CONNECTION_ID Frame is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |       25      |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                         Sequence Number                     ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |       25      |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                         Sequence Number                     ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 25.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 25.
                   </dt>
                   <dd>
                      Frame type, set to 25 for RETIRE_CONNECTION_ID frames.
                   </dd>
                   <dt>
-                     Sequence Number: 1 * Variable-Length Integer Encoding.
+                     Sequence Number: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      The sequence number of the connection ID being retired.
@@ -1685,22 +1685,22 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                <name>PATH_CHALLENGE frame</name>
                <t>A PATH_CHALLENGE Frame is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |       26      |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                                                               |
-   +                              Data                             +
-   |                                                               |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |       26      |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                                                               |
+ +                              Data                             +
+ |                                                               |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 26.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 26.
                   </dt>
                   <dd>
                      Frame type, set to 26 for PATH_CHALLENGE frames.
@@ -1717,22 +1717,22 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                <name>PATH_RESPONSE frame</name>
                <t>A PATH_RESPONSE Frame is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |       27      |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                                                               |
-   +                              Data                             +
-   |                                                               |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |       27      |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                                                               |
+ +                              Data                             +
+ |                                                               |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 27.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 27.
                   </dt>
                   <dd>
                      Frame type, set to 27 for PATH_RESPONSE frames.
@@ -1749,52 +1749,52 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                <name>CONNECTION_CLOSE frame</name>
                <t>A CONNECTION_CLOSE Frame is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |       FT      |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                           Error Code                        ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                           Frame Type                        ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                      Reason Phrase Length                   ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                                                               :
-   :                         Reason Phrase                         :
-   :                                                               |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |       FT      |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                           Error Code                        ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                           Frame Type                        ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                      Reason Phrase Length                   ...
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |                                                               :
+ :                         Reason Phrase                         :
+ :                                                               |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 28 || FT == 29.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 28 || FT.Value == 29.
                   </dt>
                   <dd>
                      Frame type, set to 28 or 29 for CONNECTION_CLOSE frames.
                   </dd>
                   <dt>
-                     Error Code: 1 * Variable-Length Integer Encoding.
+                     Error Code: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable length integer error code which indicates the reason for closing this connection.
                   </dd>
                   <dt>
-                     Frame Type: 1 * Variable-Length Integer Encoding; present only when FT == 28.
+                     Frame Type: 1 Variable Length Integer Encoding; present only when FT.Value == 28.
                   </dt>
                   <dd>
                      A variable-length integer encoding the type of frame that triggered the error.
                   </dd>
                   <dt>
-                     Reason Phrase Length (Length): 1 * Variable-Length Integer Encoding.
+                     Reason Phrase Length (Length): 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer specifying the length of the reason phrase in bytes.
                   </dd>
                   <dt>
-                     Reason Phrase: Length bytes.
+                     Reason Phrase: Length.Value bytes.
                   </dt>
                   <dd>
                      A human-readable explanation for why the connection was closed.
@@ -1805,87 +1805,28 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                <name>HANDSHAKE_DONE frame</name>
                <t>A HANDSHAKE_DONE Frame is formatted as follows:</t>
                <artwork>
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |       30      |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ |       30      |
+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                </artwork>
                <t>
                   where:
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 * Variable-Length Integer Encoding; FT == 30.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 30.
                   </dt>
                   <dd>
                      Frame type, set to 30 for HANDSHAKE_DONE frames.
                   </dd>
                </dl>
            </section>
-        </section>
-   
-        <section anchor='IANA'>
-            <name>IANA Considerations</name>
-            <t>
-                This document contains no actions for IANA.
-            </t>
-        </section>
-
-        <section anchor='security'>
-            <name>Security Considerations</name>
-        </section>
-
-        <section anchor='Acknowledgements'>
-            <name>Acknowledgements</name>
-            <t>
-                This work has received funding from the UK Engineering and Physical
-                Sciences Research Council under grant EP/R04144X/1.
-            </t>
-        </section>
+       </section>
     </middle>
 
     <back>
-        <references>
-            <name>Informative References</name>
-            <reference anchor="QUIC-TRANSPORT" target="http://www.ietf.org/internet-drafts/draft-ietf-quic-transport-27.txt">
-                <front>
-                    <title>QUIC: A UDP-Based Multiplexed and Secure Transport</title>
 
-                    <author initials='J' surname='Iyengar' fullname='Jana Iyengar'><organization /></author>
-                    <author initials='M' surname='Thomson' fullname='Martin Thomson'><organization /></author>
-
-                    <date month='February' day='21' year='2020' />
-                </front>
-
-                <seriesInfo name='Internet-Draft' value='draft-ietf-quic-transport-27' />
-            </reference>
-            <reference anchor="AUGMENTED-DIAGRAMS" target="http://www.ietf.org/internet-drafts/draft-mcquistin-augmented-ascii-diagrams-03.txt">
-                <front>
-                    <title>Describing Protocol Data Units with Augmented Packet Header Diagrams</title>
-
-                    <author initials='S' surname='McQuistin' fullname='Stephen McQuistin'><organization /></author>
-                    <author initials='V' surname='Band' fullname='Vivian Band'><organization /></author>
-                    <author initials='D' surname='Jacob' fullname='Dejice Jacob'><organization /></author>
-                    <author initials='C. S.' surname='Perkins' fullname='Colin Perkins'><organization /></author>
-
-                    <date month='March' day='9' year='2020' />
-                </front>
-
-                <seriesInfo name='Internet-Draft' value='draft-mcquistin-augmented-ascii-diagrams-03' />
-            </reference>
-        </references>
-
-        <section anchor='source'>
-            <name>Source code repository</name>
-            <t>
-                The source for this draft is available from
-                <eref target="https://github.com/glasgow-ipl/draft-mcquistin-quic-augmented-diagrams" />.
-            </t>
-            <t>
-                The source code for tooling that can be used to parse this document is available
-                from <eref target="https://github.com/glasgow-ipl/ips-protodesc-code" />.
-            </t>
-        </section>
     </back>
  </rfc>

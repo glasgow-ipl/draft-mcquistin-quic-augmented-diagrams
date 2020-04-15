@@ -93,7 +93,9 @@
               demonstrate the augmented packet header diagram format.
             </t>
             <t>
-               The QUIC protocol is comprised of Stateless Reset Packet, Protected Long Header Packet, Retry Packet, Protected Short Header Packet, and Version Negotiation Packet PDUs.
+               This document describes the QUIC protocol. The QUIC protocol uses
+               Stateless Reset Packets, Protected Long Header Packets, Retry Packets,
+               Protected Short Header Packets, and Version Negotiation Packets.
             </t>
         </section>
 

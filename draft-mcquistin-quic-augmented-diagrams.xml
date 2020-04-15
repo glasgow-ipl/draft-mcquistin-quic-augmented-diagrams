@@ -1827,6 +1827,46 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
     </middle>
 
     <back>
+        <references>
+            <name>Informative References</name>
+            <reference anchor="QUIC-TRANSPORT" target="http://www.ietf.org/internet-drafts/draft-ietf-quic-transport-27.txt">
+                <front>
+                    <title>QUIC: A UDP-Based Multiplexed and Secure Transport</title>
 
+                    <author initials='J' surname='Iyengar' fullname='Jana Iyengar'><organization /></author>
+                    <author initials='M' surname='Thomson' fullname='Martin Thomson'><organization /></author>
+
+                    <date month='February' day='21' year='2020' />
+                </front>
+
+                <seriesInfo name='Internet-Draft' value='draft-ietf-quic-transport-27' />
+            </reference>
+            <reference anchor="AUGMENTED-DIAGRAMS" target="http://www.ietf.org/internet-drafts/draft-mcquistin-augmented-ascii-diagrams-03.txt">
+                <front>
+                    <title>Describing Protocol Data Units with Augmented Packet Header Diagrams</title>
+
+                    <author initials='S' surname='McQuistin' fullname='Stephen McQuistin'><organization /></author>
+                    <author initials='V' surname='Band' fullname='Vivian Band'><organization /></author>
+                    <author initials='D' surname='Jacob' fullname='Dejice Jacob'><organization /></author>
+                    <author initials='C. S.' surname='Perkins' fullname='Colin Perkins'><organization /></author>
+
+                    <date month='March' day='9' year='2020' />
+                </front>
+
+                <seriesInfo name='Internet-Draft' value='draft-mcquistin-augmented-ascii-diagrams-03' />
+            </reference>
+        </references>
+
+        <section anchor='source'>
+            <name>Source code repository</name>
+            <t>
+                The source for this draft is available from
+                <eref target="https://github.com/glasgow-ipl/draft-mcquistin-quic-augmented-diagrams" />.
+            </t>
+            <t>
+                The source code for tooling that can be used to parse this document is available
+                from <eref target="https://github.com/glasgow-ipl/ips-protodesc-code" />.
+            </t>
+        </section>
     </back>
  </rfc>

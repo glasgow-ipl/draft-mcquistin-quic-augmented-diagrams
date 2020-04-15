@@ -94,8 +94,7 @@
             </t>
             <t>
                This document describes the QUIC protocol. The QUIC protocol uses
-               Stateless Reset Packets, Protected Long Header Packets, Retry Packets,
-               Protected Short Header Packets, and Version Negotiation Packets.
+               Stateless Reset Packets, Protected Packets, Retry Packets, and Version Negotiation Packets.
             </t>
         </section>
 
@@ -106,24 +105,27 @@
                 The apply_protection function is defined as:
             </t>
             <artwork>
-func apply_protection(unprotected_packet: Unprotected Packet)
+func apply_protection(to: Unprotected Packet)
                 -> Protected Packet:
    apply packet protection to payload
    apply header protection to first_byte and packet_number
    construct appropriate Protected Packet based on first_byte
    return Protected Packet
             </artwork>
+            <t>An Unprotected Packet is serialised to a Protected Packet using the apply_protection function.</t>
             <t>
                 The remove_protection function is defined as:
             </t>
             <artwork>
-func remove_protection(protected_packet: Protected Packet)
-        -> PDU:
+func remove_protection(from: Protected Packet)
+        -> Unprotected Packet:
    remove header protection from protected_packet
    remove packet protection from protected_packet
-   construct appropriate PDU type based on type of protected_packet
-   return PDU
+   construct appropriate packet type based on type of protected_packet
+   return Unprotected Packet
             </artwork>
+            <t>An Unprotected Packet is parsed from a Protected Packet using the remove_protection function.</t>
+            <t>An Unprotected Packet is either a Long Header Packet or a Short Header Packet.</t>
         </section>
 
         <section anchor='variableint'>
@@ -388,7 +390,6 @@ func remove_protection(protected_packet: Protected Packet)
                </dd>
             </dl>
             <t>A Long Header Packet is one of: an Initial Packet, a 0RTT Packet, a Handshake Packet, or a Retry Packet.</t>
-            <t>A Long Header Packet is constructed from a Protected Long Header Packet using the remove_protection(Protected Long Header Packet) function.</t>
             <t>A Protected Long Header is formatted as follows:</t>
             <artwork>
   0                   1                   2                   3
@@ -467,7 +468,6 @@ func remove_protection(protected_packet: Protected Packet)
                </dd>
             </dl>
             <t>A Protected Long Header Packet is one of: a Protected Initial Packet, a Protected 0RTT Packet, or a Protected Handshake Packet.</t>
-            <t>A Protected Long Header Packet is constructed from a Long Header Packet using the apply_protection(HF + FB + T + R + P, Packet Number, Payload) function.</t>
             <section anchor='longheader-initial_packet'>
                <name>Initial Packet</name>
                <t>An Initial Packet is formatted as follows:</t>
@@ -904,7 +904,6 @@ func remove_protection(protected_packet: Protected Packet)
                   The payload field, comprised of multiple frames.
                </dd>
             </dl>
-            <t>A Short Header Packet is constructed from a Protected Short Header Packet using the remove_protection(Protected Short Header Packet) function.</t>
             <t>A Protected Short Header Packet is formatted as follows:</t>
             <artwork>
   0                   1                   2                   3
@@ -968,7 +967,6 @@ func remove_protection(protected_packet: Protected Packet)
                   Packets with a short header always include a 1-RTT protected payload.
                </dd>
             </dl>
-            <t>A Protected Short Header Packet is constructed from a Short Header Packet using the apply_protection(HF + FB + S + K + P, Packet Number, Payload) function.</t>
         </section>
 
         <section anchor='frames'>
@@ -1511,7 +1509,7 @@ func remove_protection(protected_packet: Protected Packet)
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 Variable-Length Integer Encoding; FT.Value == 20.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 20.
                   </dt>
                   <dd>
                      Frame type, set to 20 for DATA_BLOCKED frames.

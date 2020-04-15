@@ -100,16 +100,23 @@
         <section anchor='protection'>
             <name>Header and Packet Protection</name>
             <t>A Protected Packet is one of: a Protected Long Header Packet, or a Protected Short Header Packet.</t>
+            <t>
+                The apply_protection function is defined as:
+            </t>
             <artwork>
-func apply_protection(first_byte: BitString,
-                      packet_number: BitString,
-                      payload: BitString)      -> Protected Packet:
+func apply_protection(unprotected_packet: Unprotected Packet)
+                -> Protected Packet:
    apply packet protection to payload
    apply header protection to first_byte and packet_number
    construct appropriate Protected Packet based on first_byte
    return Protected Packet
-
-func remove_protection(protected_packet: Protected Packet) -> PDU:
+            </artwork>
+            <t>
+                The remove_protection function is defined as:
+            </t>
+            <artwork>
+func remove_protection(protected_packet: Protected Packet)
+        -> PDU:
    remove header protection from protected_packet
    remove packet protection from protected_packet
    construct appropriate PDU type based on type of protected_packet
@@ -1116,7 +1123,7 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                      A variable-length integer representing the time delta in microseconds between when this ACK was sent and when the largest acknowledged packet, as indicated in the Largest Acknowledged field, was received by this peer.
                   </dd>
                   <dt>
-                     ACK Range Count (RangeCount): 1 Variable Length Integer Encoding.
+                     ACK Range Count: 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
                      A variable-length integer specifying the number of Gap and ACK Range fields in the frame.
@@ -1758,7 +1765,7 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  |                           Frame Type                        ...
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- |                      Reason Phrase Length                   ...
+ |                          Phrase Length                      ...
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  |                                                               :
  :                         Reason Phrase                         :
@@ -1788,10 +1795,10 @@ func remove_protection(protected_packet: Protected Packet) -> PDU:
                      A variable-length integer encoding the type of frame that triggered the error.
                   </dd>
                   <dt>
-                     Reason Phrase Length (Length): 1 Variable Length Integer Encoding.
+                    Phrase Length (Length): 1 Variable Length Integer Encoding.
                   </dt>
                   <dd>
-                     A variable-length integer specifying the length of the reason phrase in bytes.
+                    A variable-length integer specifying the length of the reason phrase in bytes.
                   </dd>
                   <dt>
                      Reason Phrase: Length.Value bytes.

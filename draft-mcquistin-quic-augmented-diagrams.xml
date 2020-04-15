@@ -101,7 +101,7 @@
 
         <section anchor='protection'>
             <name>Header and Packet Protection</name>
-            <t>A Protected Packet is one of: a Protected Long Header Packet, or a Protected Short Header Packet.</t>
+            <t>A Protected Packet is either a Protected Long Header Packet or a Protected Short Header Packet.</t>
             <t>
                 The apply_protection function is defined as:
             </t>

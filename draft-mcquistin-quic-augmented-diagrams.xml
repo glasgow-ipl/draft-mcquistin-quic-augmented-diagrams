@@ -317,11 +317,11 @@ func remove_protection(from: Protected Packet)
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  |    DCID Len   |
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- |                   Destination Connection ID                 ...
+ |                 Destination Connection ID (DCID)            ...
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  |    SCID Len   |
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- |                      Source Connection ID                   ...
+ |                  Source Connection ID (SCID)                ...
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
             </artwork>
             <t>
@@ -371,7 +371,7 @@ func remove_protection(from: Protected Packet)
                   This field contains the length, in bytes, of the Destination Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
                </dd>
                <dt>
-                  Destination Connection ID: DLen bytes.
+                  Destination Connection ID (DCID): DLen bytes.
                </dt>
                <dd>
                   The Destination Connection ID field is between 0 and 20 bytes in length.
@@ -383,7 +383,7 @@ func remove_protection(from: Protected Packet)
                   This field contains the length, in bytes, of the Source Connection ID field that follows it. This length is encoded as an 8-bit unsigned integer. In QUIC version 1, this value MUST NOT exceed 20 bytes. Endpoints that receive a version 1 long header with a value larger than 20 MUST drop the packet. Servers SHOULD be able to read longer connection IDs from other QUIC versions in order to properly form a version negotiation packet.
                </dd>
                <dt>
-                  Source Connection ID: SLen bytes.
+                  Source Connection ID (SCID): SLen bytes.
                </dt>
                <dd>
                   The Source Connection ID field is between 0 and 20 bytes in length.
@@ -498,7 +498,7 @@ func remove_protection(from: Protected Packet)
                      Long Header (LH): 1 Long Header; LH.T == 0.
                   </dt>
                   <dd>
-                     An Initial packet uses long headers with a type value of 0x0.
+                     An Initial packet uses long headers with a type value of 0x0. On receipt, the value of LH.DCID is stored as Initial DCID.
                   </dd>
                   <dt>
                      Token Length (TL): 1 Variable Length Integer Encoding.

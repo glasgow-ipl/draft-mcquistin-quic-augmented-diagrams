@@ -58,7 +58,7 @@
             </address>
         </author>
 
-        <?date year='2020' month='March' day='18'/?>
+        <?date year='2020' month='April' day='24'/?>
 
         <abstract>
             <t>
@@ -90,7 +90,8 @@
             <t>
               This document is not an exhaustive description of the QUIC
               protocol. It contains only those elements necessary to
-              demonstrate the augmented packet header diagram format.
+              demonstrate the augmented packet header diagram format, and
+              should be read as an example of the use of that format.
             </t>
             <t>
                This document describes the QUIC protocol. The QUIC protocol uses
@@ -121,7 +122,7 @@ func remove_protection(from: Protected Packet)
         -> Unprotected Packet:
    remove header protection from protected_packet
    remove packet protection from protected_packet
-   construct appropriate packet type based on type of protected_packet
+   construct appropriate packet type
    return Unprotected Packet
             </artwork>
             <t>An Unprotected Packet is parsed from a Protected Packet using the remove_protection function.</t>
@@ -1848,7 +1849,7 @@ func remove_protection(from: Protected Packet)
 
                 <seriesInfo name='Internet-Draft' value='draft-ietf-quic-transport-27' />
             </reference>
-            <reference anchor="AUGMENTED-DIAGRAMS" target="http://www.ietf.org/internet-drafts/draft-mcquistin-augmented-ascii-diagrams-03.txt">
+            <reference anchor="AUGMENTED-DIAGRAMS" target="http://www.ietf.org/internet-drafts/draft-mcquistin-augmented-ascii-diagrams-04.txt">
                 <front>
                     <title>Describing Protocol Data Units with Augmented Packet Header Diagrams</title>
 
@@ -1857,10 +1858,10 @@ func remove_protection(from: Protected Packet)
                     <author initials='D' surname='Jacob' fullname='Dejice Jacob'><organization /></author>
                     <author initials='C. S.' surname='Perkins' fullname='Colin Perkins'><organization /></author>
 
-                    <date month='March' day='9' year='2020' />
+                    <date month='April' day='24' year='2020' />
                 </front>
 
-                <seriesInfo name='Internet-Draft' value='draft-mcquistin-augmented-ascii-diagrams-03' />
+                <seriesInfo name='Internet-Draft' value='draft-mcquistin-augmented-ascii-diagrams-04' />
             </reference>
         </references>
 

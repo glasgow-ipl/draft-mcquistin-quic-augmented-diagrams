@@ -102,9 +102,16 @@
         <section anchor='protection'>
             <name>Header and Packet Protection</name>
             <t>A Protected Packet is either a Protected Long Header Packet or a Protected Short Header Packet.</t>
-            <t>
-                The apply_protection function is defined as:
-            </t>
+            <t>An Unprotected Packet is either a Long Header Packet or a Short Header Packet.</t>
+            <t>An Unprotected Packet is parsed from a Protected Packet using the remove_protection function. The remove_protection function is defined as: </t>
+            <artwork>
+func remove_protection(from: Protected Packet) -> Unprotected Packet:
+   remove header protection from protected_packet
+   remove packet protection from protected_packet
+   construct appropriate packet type
+   return Unprotected Packet
+            </artwork>
+            <t>An Unprotected Packet is serialised to a Protected Packet using the apply_protection function. The apply_protection function is defined as:</t>
             <artwork>
 func apply_protection(to: Unprotected Packet)
                 -> Protected Packet:
@@ -113,20 +120,6 @@ func apply_protection(to: Unprotected Packet)
    construct appropriate Protected Packet based on first_byte
    return Protected Packet
             </artwork>
-            <t>An Unprotected Packet is serialised to a Protected Packet using the apply_protection function.</t>
-            <t>
-                The remove_protection function is defined as:
-            </t>
-            <artwork>
-func remove_protection(from: Protected Packet)
-        -> Unprotected Packet:
-   remove header protection from protected_packet
-   remove packet protection from protected_packet
-   construct appropriate packet type
-   return Unprotected Packet
-            </artwork>
-            <t>An Unprotected Packet is parsed from a Protected Packet using the remove_protection function.</t>
-            <t>An Unprotected Packet is either a Long Header Packet or a Short Header Packet.</t>
         </section>
 
         <section anchor='variableint'>

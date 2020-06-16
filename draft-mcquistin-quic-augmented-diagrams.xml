@@ -237,7 +237,7 @@ func remove_protection(from: Protected Packet)
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |1|   Unused  |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                             Version                           |
+|                           Version ID                          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |    DCID Len   |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -267,7 +267,7 @@ func remove_protection(from: Protected Packet)
                  The value in the Unused field is selected randomly by the server. Clients MUST ignore the value of this field.  Servers SHOULD set the most significant bit of this field (0x40) to 1 so that Version Negotiation packets appear to have the Fixed Bit field.
               </dd>
               <dt>
-                 Version: 1 Version; Version.ID == 0.
+                 Version ID: 1 Version; Version ID.ID == 0.
               </dt>
               <dd>
                  The Version field of a Version Negotiation packet MUST be set to 0x0000000.
@@ -314,7 +314,7 @@ func remove_protection(from: Protected Packet)
  +-+-+-+-+-+-+-+-+
  |1|1| T | R | P |
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- |                             Version                           |
+ |                          Version ID                           |
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  |    DCID Len   |
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -360,7 +360,7 @@ func remove_protection(from: Protected Packet)
                   In packet types which contain a Packet Number field, the least significant two bits (those with a mask of 0x03) of byte 0 contain the length of the packet number, encoded as an unsigned, two-bit integer that is one less than the length of the packet number field in bytes.
                </dd>
                <dt>
-                  Version: 1 Version.
+                  Version ID: 1 Version.
                </dt>
                <dd>
                   This field indicates which version of QUIC is in use and determines how the rest of the protocol fields are interpreted.
@@ -398,7 +398,7 @@ func remove_protection(from: Protected Packet)
  +-+-+-+-+-+-+-+-+
  |1|1| T | PBits |
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- |                             Version                           |
+ |                           Version ID                          |
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  |    DCID Len   |
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -438,7 +438,7 @@ func remove_protection(from: Protected Packet)
                   4 bits protected using header protection.
                </dd>
                <dt>
-                  Version: 1 Version.
+                  Version ID: 1 Version.
                </dt>
                <dd>
                   This field indicates which version of QUIC is in use and determines how the rest of the protocol fields are interpreted.

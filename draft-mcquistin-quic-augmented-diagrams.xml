@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='US-ASCII'?>
-<rfc version='3' ipr='trust200902' submissionType='IETF' docName='draft-mcquistin-quic-augmented-diagrams-00' category='exp'>
+<rfc version='3' ipr='trust200902' submissionType='IETF' docName='draft-mcquistin-quic-augmented-diagrams-01' category='exp'>
     <front>
         <title abbrev='QUIC Augmented Packet Diagrams'>
             Describing QUIC's Protocol Data Units with Augmented Packet Header Diagrams
         </title>
-        <seriesInfo name='Internet-Draft' value='draft-mcquistin-quic-augmented-diagrams-00' status="experimental" />
+        <seriesInfo name='Internet-Draft' value='draft-mcquistin-quic-augmented-diagrams-01' status="experimental" />
 
         <author fullname='Stephen McQuistin' initials='S.' surname='McQuistin'>
             <organization>University of Glasgow</organization>

@@ -1842,7 +1842,7 @@ func apply_protection(to: Unprotected Packet)
 
                 <seriesInfo name='Internet-Draft' value='draft-ietf-quic-transport-27' />
             </reference>
-            <reference anchor="AUGMENTED-DIAGRAMS" target="http://www.ietf.org/internet-drafts/draft-mcquistin-augmented-ascii-diagrams-04.txt">
+            <reference anchor="AUGMENTED-DIAGRAMS" target="http://www.ietf.org/internet-drafts/draft-mcquistin-augmented-ascii-diagrams-05.txt">
                 <front>
                     <title>Describing Protocol Data Units with Augmented Packet Header Diagrams</title>
 
@@ -1851,10 +1851,10 @@ func apply_protection(to: Unprotected Packet)
                     <author initials='D' surname='Jacob' fullname='Dejice Jacob'><organization /></author>
                     <author initials='C. S.' surname='Perkins' fullname='Colin Perkins'><organization /></author>
 
-                    <date month='April' day='24' year='2020' />
+                    <date month='June' day='17' year='2020' />
                 </front>
 
-                <seriesInfo name='Internet-Draft' value='draft-mcquistin-augmented-ascii-diagrams-04' />
+                <seriesInfo name='Internet-Draft' value='draft-mcquistin-augmented-ascii-diagrams-05' />
             </reference>
         </references>
 

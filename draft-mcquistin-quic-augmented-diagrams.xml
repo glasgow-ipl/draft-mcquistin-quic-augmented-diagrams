@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='US-ASCII'?>
-<rfc version='3' ipr='trust200902' submissionType='IETF' docName='draft-mcquistin-quic-augmented-diagrams-02' category='exp'>
+<rfc version='3' ipr='trust200902' submissionType='IETF' docName='draft-mcquistin-quic-augmented-diagrams-03' category='exp'>
     <front>
         <title abbrev='QUIC Augmented Packet Diagrams'>
             Describing QUIC's Protocol Data Units with Augmented Packet Header Diagrams
         </title>
-        <seriesInfo name='Internet-Draft' value='draft-mcquistin-quic-augmented-diagrams-02' status="experimental" />
+        <seriesInfo name='Internet-Draft' value='draft-mcquistin-quic-augmented-diagrams-03' status="experimental" />
 
         <author fullname='Stephen McQuistin' initials='S.' surname='McQuistin'>
             <organization>University of Glasgow</organization>
@@ -58,7 +58,7 @@
             </address>
         </author>
 
-        <?date year='2020' month='April' day='24'/?>
+        <?date year='2020' month='November' day='2'/?>
 
         <abstract>
             <t>
@@ -188,7 +188,7 @@ func apply_protection(to: Unprotected Packet)
                     The next bit (0x40) of byte 0 is set to 1. Packets containing a zero value for this bit are not valid packets in this version and MUST be discarded.
                 </dd>
                 <dt>
-                    Unpredictable Bits (UB): UB.Size > 38.
+                    Unpredictable Bits (UB): UB#Size > 38.
                 </dt>
                 <dd>
                     The remainder of the first byte and an arbitrary number of bytes following it that are set to unpredictable values.
@@ -903,7 +903,7 @@ func apply_protection(to: Unprotected Packet)
   0                   1                   2                   3
   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
  +-+-+-+-+-+-+-+-+
- |0|1|S| ProcRKP |
+ |0|1|S| R |K| P |
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  |                   Destination Connection ID                 ...
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -937,10 +937,22 @@ func apply_protection(to: Unprotected Packet)
                   The third most significant bit (0x20) of byte 0 is the latency spin bit.
                </dd>
                <dt>
-                  Protected Bits (ProcRKP): 5 bits.
+                  Reserved Bits (R): 2 bits.
                </dt>
                <dd>
-                  Five header protected bits.
+                  The next two bits (those with a mask of 0x18) of byte 0 are reserved. These bits are protected using header protection.  The value included prior to protection MUST be set to 0.
+               </dd>
+               <dt>
+                  Key Phase (K): 1 bit.
+               </dt>
+               <dd>
+                  The next bit (0x04) of byte 0 indicates the key phase, which allows a recipient of a packet to identify the packet protection keys that are used to protect the packet. This bit is protected using header protection.
+               </dd>
+               <dt>
+                  Packet Number Length (P): 2 bits.
+               </dt>
+               <dd>
+                  In packet types which contain a Packet Number field, the least significant two bits (those with a mask of 0x03) of byte 0 contain the length of the packet number, encoded as an unsigned, two-bit integer that is one less than the length of the packet number field in bytes. These bits are protected using header protection.
                </dd>
                <dt>
                   Destination Connection ID: 20 bytes.
@@ -949,7 +961,7 @@ func apply_protection(to: Unprotected Packet)
                   The Destination Connection ID is a connection ID that is chosen by the intended recipient of the packet.
                </dd>
                <dt>
-                  Packet Number.
+                  Packet Number: P+1 bytes.
                </dt>
                <dd>
                   The packet number field is 1 to 4 bytes long. The packet number has confidentiality protection separate from packet protection.  The length of the packet number field is encoded in Packet Number Length field.
@@ -981,7 +993,7 @@ func apply_protection(to: Unprotected Packet)
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 Variable Length Integer Encoding; FT == 0.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 0.
                   </dt>
                   <dd>
                      Frame type, set to 0 for PADDING frames.
@@ -1003,7 +1015,7 @@ func apply_protection(to: Unprotected Packet)
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 Variable Length Integer Encoding; FT == 1.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 1.
                   </dt>
                   <dd>
                      Frame type, set to 1 for PING frames.
@@ -1099,7 +1111,7 @@ func apply_protection(to: Unprotected Packet)
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 Variable Length Integer Encoding; (FT == 3) || (FT == 4).
+                     Frame Type (FT): 1 Variable Length Integer Encoding; (FT.Value == 3) || (FT.Value == 4).
                   </dt>
                   <dd>
                      Frame type, set to 3 or 4 for ACK frames.
@@ -1135,7 +1147,7 @@ func apply_protection(to: Unprotected Packet)
                      Contains additional ranges of packets which are alternately not acknowledged and acknowledged.
                   </dd>
                   <dt>
-                     ECN Counts: 1 ECN Count; present only when FT == 3.
+                     ECN Counts: 1 ECN Count; present only when FT.Value == 3.
                   </dt>
                   <dd>
                      The three ECN Counts.
@@ -1163,7 +1175,7 @@ func apply_protection(to: Unprotected Packet)
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 Variable Length Integer Encoding; FT == 4.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 4.
                   </dt>
                   <dd>
                      Frame type, set to 4 for RESET_STREAM frames.
@@ -1207,7 +1219,7 @@ func apply_protection(to: Unprotected Packet)
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 Variable Length Integer Encoding; FT == 5.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 5.
                   </dt>
                   <dd>
                      Frame type, set to 5 for STOP_SENDING frames.
@@ -1249,7 +1261,7 @@ func apply_protection(to: Unprotected Packet)
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 Variable Length Integer Encoding; FT == 6.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 6.
                   </dt>
                   <dd>
                      Frame type, set to 6 for CRYPTO frames.
@@ -1295,7 +1307,7 @@ func apply_protection(to: Unprotected Packet)
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 Variable Length Integer Encoding; FT == 7.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 7.
                   </dt>
                   <dd>
                      Frame type, set to 7 for NEW_TOKEN frames.
@@ -1405,7 +1417,7 @@ func apply_protection(to: Unprotected Packet)
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 Variable Length Integer Encoding; FT == 16.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 16.
                   </dt>
                   <dd>
                      Frame type, set to 16 for MAX_DATA frames.
@@ -1437,7 +1449,7 @@ func apply_protection(to: Unprotected Packet)
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 Variable Length Integer Encoding; FT == 17.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 17.
                   </dt>
                   <dd>
                      Frame type, set to 17 for MAX_STREAM_DATA frames.
@@ -1473,7 +1485,7 @@ func apply_protection(to: Unprotected Packet)
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 Variable Length Integer Encoding; (FT == 18) || (FT == 19).
+                     Frame Type (FT): 1 Variable Length Integer Encoding; (FT.Value == 18) || (FT.Value == 19).
                   </dt>
                   <dd>
                      Frame type, set to 18 or 19 for MAX_STREAMS frames.
@@ -1503,7 +1515,7 @@ func apply_protection(to: Unprotected Packet)
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 Variable Length Integer Encoding; FT == 20.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 20.
                   </dt>
                   <dd>
                      Frame type, set to 20 for DATA_BLOCKED frames.
@@ -1535,7 +1547,7 @@ func apply_protection(to: Unprotected Packet)
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 Variable Length Integer Encoding; FT == 21.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 21.
                   </dt>
                   <dd>
                      Frame type, set to 21 for STREAM_DATA_BLOCKED frames.
@@ -1571,7 +1583,7 @@ func apply_protection(to: Unprotected Packet)
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 Variable Length Integer Encoding; (FT == 22) || (FT == 23).
+                     Frame Type (FT): 1 Variable Length Integer Encoding; (FT.Value == 22) || (FT.Value == 23).
                   </dt>
                   <dd>
                      Frame type, set to 22 or 23 for STREAMS_BLOCKED frames.
@@ -1615,7 +1627,7 @@ func apply_protection(to: Unprotected Packet)
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 Variable Length Integer Encoding; FT == 24.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 24.
                   </dt>
                   <dd>
                      Frame type, set to 24 for NEW_CONNECTION_ID frames.
@@ -1669,7 +1681,7 @@ func apply_protection(to: Unprotected Packet)
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 Variable Length Integer Encoding; FT == 25.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 25.
                   </dt>
                   <dd>
                      Frame type, set to 25 for RETIRE_CONNECTION_ID frames.
@@ -1701,7 +1713,7 @@ func apply_protection(to: Unprotected Packet)
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 Variable Length Integer Encoding; FT == 26.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 26.
                   </dt>
                   <dd>
                      Frame type, set to 26 for PATH_CHALLENGE frames.
@@ -1733,7 +1745,7 @@ func apply_protection(to: Unprotected Packet)
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 Variable Length Integer Encoding; FT == 27.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 27.
                   </dt>
                   <dd>
                      Frame type, set to 27 for PATH_RESPONSE frames.
@@ -1771,7 +1783,7 @@ func apply_protection(to: Unprotected Packet)
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 Variable Length Integer Encoding; FT == 28 || FT == 29.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 28 || FT.Value == 29.
                   </dt>
                   <dd>
                      Frame type, set to 28 or 29 for CONNECTION_CLOSE frames.
@@ -1783,7 +1795,7 @@ func apply_protection(to: Unprotected Packet)
                      A variable length integer error code which indicates the reason for closing this connection.
                   </dd>
                   <dt>
-                     Frame Type: 1 Variable Length Integer Encoding; present only when FT == 28.
+                     Frame Type: 1 Variable Length Integer Encoding; present only when FT.Value == 28.
                   </dt>
                   <dd>
                      A variable-length integer encoding the type of frame that triggered the error.
@@ -1817,7 +1829,7 @@ func apply_protection(to: Unprotected Packet)
                </t>
                <dl>
                   <dt>
-                     Frame Type (FT): 1 Variable Length Integer Encoding; FT == 30.
+                     Frame Type (FT): 1 Variable Length Integer Encoding; FT.Value == 30.
                   </dt>
                   <dd>
                      Frame type, set to 30 for HANDSHAKE_DONE frames.

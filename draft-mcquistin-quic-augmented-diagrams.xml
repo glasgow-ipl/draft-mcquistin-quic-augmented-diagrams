@@ -65,8 +65,8 @@
               This document describes the core transport protocol data units
               used in the QUIC protocol using a machine-readable augmented
               packet header diagram format. It is intended as an example of
-              the packet header diagram language, and not as a contribution
-              to the development of the QUIC protocol.
+              the augmented packet header diagram language, and not as a
+              contribution to the development of the QUIC protocol.
             </t>
         </abstract>
     </front>
@@ -85,7 +85,9 @@
               To demonstrate how this approach can be applied, and the
               value that it can provide, this document describes QUIC
               <xref target="QUIC-TRANSPORT" /> using the augment packet
-              header diagram format.
+              header diagram format. It is intended as an example of
+              the augmented packet header diagram language, and not as a
+              contribution to the development of the QUIC protocol.
             </t>
             <t>
               This document is not an exhaustive description of the QUIC
